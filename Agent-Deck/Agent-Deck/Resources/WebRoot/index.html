@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>Agent Deck</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Agent Deck</h1>
+            <div class="connection-status" id="connection-status">
+                <span class="status-dot" id="status-dot"></span>
+                <span class="status-text" id="status-text">Connecting...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h2>No agents detected</h2>
+            <p>Launch Claude Code on your Mac to start monitoring</p>
+        </div>
+
+        <!-- Agent List -->
+        <div class="agent-list" id="agent-list">
+            <!-- Agent cards will be dynamically inserted here -->
+            <!-- Example card structure (created by JavaScript):
+            <div class="agent-card">
+              <div class="card-header">...</div>
+              <div class="card-body">
+                <div class="card-info">...</div>
+                <div class="current-task">...</div>
+                <details class="subagents-section">
+                  <summary>Active Subagents (3)</summary>
+                  <ul class="subagents-list">
+                    <li class="subagent-item">...</li>
+                  </ul>
+                </details>
+                <details class="todos-section">
+                  <summary>Tasks (2 of 5 complete)</summary>
+                  <ul class="todos-list">
+                    <li class="todo-item completed">...</li>
+                  </ul>
+                </details>
+                <div class="metadata">...</div>
+              </div>
+            </div>
+            -->
+        </div>
+    </main>
+
+    <!-- Connection Setup Modal (shown on first visit) -->
+    <div class="modal" id="setup-modal">
+        <div class="modal-content">
+            <h2>Connect to Agent Deck</h2>
+            <p>Enter your Mac's local IP address and port from the menubar QR code:</p>
+            <input type="text" id="server-url" placeholder="ws://192.168.1.100:3000" />
+            <button id="connect-btn">Connect</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

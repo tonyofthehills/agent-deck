@@ -1,0 +1,687 @@
+/*
+ * styles.css - Agent Deck PWA
+ * Tasks: T039 - dark mode, mobile-optimized
+ */
+
+/* CSS Variables */
+:root {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2a2a2a;
+    --bg-card: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #888888;
+    --border: #444444;
+    --accent: #0066cc;
+
+    /* Status colors from spec */
+    --status-idle: #888888;
+    --status-working: #0066cc;
+    --status-done: #00aa00;
+    --status-error: #cc0000;
+
+    /* Spacing */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+
+    /* Typography */
+    --font-size-sm: 12px;
+    --font-size-md: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 20px;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* Header */
+.header {
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: var(--spacing-md);
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.header h1 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+}
+
+/* Connection Status */
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--status-error);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.connected {
+    background-color: var(--status-done);
+    animation: none;
+}
+
+.status-dot.connecting {
+    background-color: var(--accent);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.status-text {
+    color: var(--text-secondary);
+}
+
+/* Main Content */
+.main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    min-height: calc(100vh - 80px);
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.empty-state.hidden {
+    display: none;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+}
+
+.empty-state h2 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-md);
+}
+
+/* Agent List */
+.agent-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.agent-list.hidden {
+    display: none;
+}
+
+/* Agent Card */
+.agent-card {
+    background-color: var(--bg-card);
+    border-left: 4px solid var(--status-idle);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    /* Touch target size - minimum 44px */
+    min-height: 44px;
+}
+
+.agent-card:active {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.agent-card.status-idle {
+    border-left-color: var(--status-idle);
+}
+
+.agent-card.status-working {
+    border-left-color: var(--status-working);
+}
+
+.agent-card.status-done {
+    border-left-color: var(--status-done);
+}
+
+.agent-card.status-error {
+    border-left-color: var(--status-error);
+}
+
+/* Card Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.card-badge {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Card Body */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.card-status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-md);
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--status-idle);
+}
+
+.status-indicator.idle {
+    background-color: var(--status-idle);
+}
+
+.status-indicator.working {
+    background-color: var(--status-working);
+}
+
+.status-indicator.done {
+    background-color: var(--status-done);
+}
+
+.status-indicator.error {
+    background-color: var(--status-error);
+}
+
+/* Agent Info - Type + Working Directory */
+.card-info {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.card-type {
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.card-separator {
+    margin: 0 6px;
+    opacity: 0.5;
+}
+
+.card-working-dir {
+    word-break: break-all;
+}
+
+/* Current Task - PROMINENT (what user wants to see) */
+.current-task {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 8px 0;
+    min-height: 44px; /* Ensure good touch target */
+    display: flex;
+    align-items: center;
+}
+
+.current-task.idle {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Legacy support */
+.card-current-task-prominent {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin: 8px 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+.card-current-task-prominent.idle {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Status Footer - Status + Timestamp */
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.status-indicator-small {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--status-idle);
+}
+
+.status-indicator-small.idle {
+    background-color: var(--status-idle);
+}
+
+.status-indicator-small.working {
+    background-color: var(--status-working);
+}
+
+.status-indicator-small.done {
+    background-color: var(--status-done);
+}
+
+.status-indicator-small.error {
+    background-color: var(--status-error);
+}
+
+.status-text {
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.footer-separator {
+    margin: 0 4px;
+    opacity: 0.5;
+}
+
+.timestamp-text {
+    opacity: 0.8;
+}
+
+/* Legacy styles kept for compatibility */
+.card-working-dir-legacy {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    word-break: break-all;
+}
+
+.card-current-task {
+    font-size: var(--font-size-md);
+    color: var(--text-primary);
+    padding: var(--spacing-sm);
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+    margin-top: var(--spacing-sm);
+}
+
+.card-timestamp {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-sm);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: var(--spacing-lg);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-md);
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent);
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    cursor: pointer;
+
+    /* Touch target */
+    min-height: 44px;
+}
+
+.modal-content button:active {
+    opacity: 0.8;
+}
+
+/* Error Toast */
+.error-toast {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--status-error);
+    color: var(--text-primary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-size: var(--font-size-md);
+    z-index: 2000;
+    animation: slideUp 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+}
+
+/* Success Toast */
+.success-toast {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--status-done);
+    color: var(--text-primary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-size: var(--font-size-md);
+    z-index: 2000;
+    animation: slideUp 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Card interaction states */
+.agent-card.tapped {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.agent-card.focus-success {
+    animation: flashSuccess 1s ease;
+}
+
+.agent-card.focus-error {
+    animation: flashError 1s ease;
+}
+
+@keyframes flashSuccess {
+    0%, 100% { background-color: var(--bg-card); }
+    50% { background-color: rgba(0, 170, 0, 0.2); }
+}
+
+@keyframes flashError {
+    0%, 100% { background-color: var(--bg-card); }
+    50% { background-color: rgba(204, 0, 0, 0.2); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .header-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .agent-card {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* Expandable Sections (Subagents & Todos) */
+.subagents-section,
+.todos-section {
+    margin: var(--spacing-sm) 0;
+    border-left: 2px solid var(--border);
+    padding-left: var(--spacing-sm);
+}
+
+.subagents-section summary,
+.todos-section summary {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 0;
+    list-style: none; /* Hide default disclosure triangle */
+}
+
+.subagents-section summary::-webkit-details-marker,
+.todos-section summary::-webkit-details-marker {
+    display: none; /* Hide default triangle on WebKit */
+}
+
+.subagents-section summary::before,
+.todos-section summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 6px;
+    transition: transform 0.2s ease;
+    font-size: 10px;
+}
+
+.subagents-section[open] summary::before,
+.todos-section[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.subagents-section summary:hover,
+.todos-section summary:hover {
+    color: var(--text-primary);
+}
+
+/* Subagents List */
+.subagents-list {
+    list-style: none;
+    padding: var(--spacing-sm) 0;
+    margin: 0;
+}
+
+.subagent-item {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    margin: 4px 0;
+    padding: 4px 0;
+}
+
+.subagent-type {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.subagent-description {
+    color: var(--text-secondary);
+}
+
+/* Todos List */
+.todos-list {
+    list-style: none;
+    padding: var(--spacing-sm) 0;
+    margin: 0;
+}
+
+.todo-item {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    margin: 4px 0;
+    padding: 4px 0;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.todo-icon {
+    font-size: var(--font-size-md);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.todo-content {
+    flex: 1;
+}
+
+.todo-item.completed {
+    opacity: 0.6;
+}
+
+.todo-item.completed .todo-content {
+    text-decoration: line-through;
+}
+
+.todo-item.in_progress {
+    font-weight: 600;
+}
+
+.todo-item.in_progress .todo-icon {
+    animation: pulse 2s infinite;
+}
+
+.todo-item.pending {
+    opacity: 0.8;
+}
+
+/* Metadata Footer */
+.metadata {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-sm);
+    margin-bottom: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+
+.metadata-model {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.metadata-branch {
+    font-weight: 500;
+    color: var(--status-working);
+}
+
+.metadata-directory {
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 11px;
+    background-color: var(--bg-secondary);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.metadata-separator {
+    opacity: 0.5;
+}
+
+/* PWA Safe Area (for iPhone notch) */
+@supports (padding: max(0px)) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
