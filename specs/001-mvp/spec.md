@@ -112,6 +112,9 @@ Developer wants quick access to frequently-used apps and commands while monitori
 4. **Given** user has 6 custom actions configured, **When** viewing PWA, **Then** all 6 buttons display in scrollable grid with labels and icons visible
 5. **Given** custom action execution fails, **When** PWA receives error response, **Then** PWA shows toast notification with error message
 6. **Given** no custom actions configured, **When** PWA loads, **Then** custom actions section is hidden from display
+7. **Given** custom action type is "url", **When** user taps button, **Then** Mac opens URL in default browser within 1 second
+8. **Given** custom action type is "shortcut", **When** user taps button, **Then** Mac triggers named Apple Shortcut via assigned keyboard shortcut
+9. **Given** target application is not installed, **When** PWA displays action, **Then** button appears in disabled state with reduced opacity
 
 ---
 
@@ -182,18 +185,22 @@ Developer wants quick access to frequently-used apps and commands while monitori
 - **FR-034**: Users MUST be able to configure server port and auto-start on login via settings UI
 
 **Custom Actions**:
-- **FR-035**: System MUST load custom actions from YAML configuration with schema: action id, label, icon (emoji), action type (applescript/bash), and command/script content
+- **FR-035**: System MUST load custom actions from YAML configuration with schema: action id, label, icon (emoji), action type (applescript/bash/url/shortcut), and command/script content
 - **FR-036**: System MUST broadcast custom actions list to PWA via WebSocket on initial connection
 - **FR-037**: System MUST execute AppleScript commands when receiving custom action request with type "applescript"
 - **FR-038**: System MUST execute Bash scripts when receiving custom action request with type "bash"
 - **FR-039**: System MUST return execution result (success/error) to PWA within 2 seconds of action execution
 - **FR-040**: System MUST prevent concurrent execution of the same custom action (queue or reject duplicate requests)
 - **FR-041**: System MUST provide error messages when custom action fails (e.g., "Application 'Figma' not found", "Script execution failed: permission denied")
-- **FR-042**: PWA MUST display custom actions as grid of square buttons with label and emoji icon
+- **FR-042**: PWA MUST display custom actions as grid of square buttons with label and emoji icon, with minimum touch target size of 44×44 pixels
 - **FR-043**: PWA MUST send custom action execution request to Mac when user taps action button
 - **FR-044**: PWA MUST show loading indicator on button while action executes
 - **FR-045**: PWA MUST display toast notification with success/error message after action completes
 - **FR-046**: PWA MUST hide custom actions section when no actions are configured
+- **FR-047**: System MUST open URLs in default browser when receiving custom action request with type "url"
+- **FR-048**: System MUST trigger Apple Shortcuts via assigned keyboard shortcut when receiving custom action request with type "shortcut"
+- **FR-049**: PWA MUST display button disabled state (reduced opacity) when action prerequisites not met
+- **FR-050**: System MUST validate action prerequisites before execution and return disabled state to PWA (e.g., check if target application is installed)
 
 ### Key Entities
 
@@ -246,6 +253,7 @@ Developer wants quick access to frequently-used apps and commands while monitori
 - **SC-012**: System runs continuously for 24+ hours without crashes or memory leaks
 - **SC-013**: Window switching succeeds 95%+ of attempts when accessibility permissions granted
 - **SC-020**: Custom actions fail gracefully with descriptive error messages when execution errors occur (app not found, permission denied, etc.)
+- **SC-021**: Custom action buttons meet minimum 44×44 pixel touch target size for accessibility compliance
 
 **Platform Compatibility**:
 - **SC-014**: Mac app runs on macOS 12 (Monterey) through macOS 14 (Sonoma) without compatibility issues
