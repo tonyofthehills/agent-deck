@@ -62,19 +62,20 @@ Includes:
 
 ## 🎯 MVP Goals (Week 1-2)
 
-**Week 1: Mac App Core**
+**Week 1: Mac App Core** ✅ COMPLETE
 - [x] SwiftUI menubar app
-- [ ] Process monitoring (Claude Code instances)
-- [ ] Embedded WebSocket server
-- [ ] Settings window
-- [ ] QR code for mobile pairing
+- [x] Process monitoring (Claude Code instances)
+- [x] Embedded WebSocket server
+- [x] Real-time transcript parsing (FSEvents)
+- [x] Rich data display (model name, git branch, subagents, todos)
+- [x] PWA mobile interface with expandable sections
 
-**Week 2: PWA Mobile + Window Switching**
-- [ ] PWA mobile interface
-- [ ] Real-time status updates
+**Week 2: Window Switching + Polish** 🚧 IN PROGRESS
 - [ ] AppleScript window switching
 - [ ] Tap-to-focus functionality
+- [ ] QR code for mobile pairing
 - [ ] "Add to Home Screen" verified
+- [ ] Settings window
 
 **🎯 Ship to first users at end of Week 2**
 
@@ -115,10 +116,12 @@ Includes:
 
 ## 🔗 Resources
 
+- **GitHub Repository**: https://github.com/tonyofthehills/agent-deck
 - **SpecKit Docs**: https://speckit.org
 - **SpecKit GitHub**: https://github.com/github/spec-kit
 - **Product Spec**: [`agent-deck-spec-final.md`](./agent-deck-spec-final.md)
+- **Lessons Learned**: [`LESSONS_LEARNED.md`](./LESSONS_LEARNED.md)
 
 ---
 
-**Status:** 🚧 In development - Phase 1 (MVP)
+**Status:** 🚧 In development - Phase 1 (MVP - Week 1 Complete)
