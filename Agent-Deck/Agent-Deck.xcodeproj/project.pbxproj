@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2915B14A2EB7B0070011ED0D /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 2915B1492EB7B0070011ED0D /* Yams */; };
+		29B52E7A2EB7B877004C00D1 /* default-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 29B52E782EB7B860004C00D1 /* default-config.yaml */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		29BA56042EB7906600D8E575 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29B52E782EB7B860004C00D1 /* default-config.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "default-config.yaml"; sourceTree = "<group>"; };
 		29BA55F62EB7906400D8E575 /* Agent-Deck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agent-Deck.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29BA56032EB7906600D8E575 /* Agent-DeckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Agent-DeckTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29BA560D2EB7906600D8E575 /* Agent-DeckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Agent-DeckUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2915B14A2EB7B0070011ED0D /* Yams in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +79,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2915B1482EB7B0070011ED0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29B52E762EB7B860004C00D1 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = icons;
+			sourceTree = "<group>";
+		};
+		29B52E772EB7B860004C00D1 /* Webroot */ = {
+			isa = PBXGroup;
+			children = (
+				29B52E762EB7B860004C00D1 /* icons */,
+			);
+			path = Webroot;
+			sourceTree = "<group>";
+		};
+		29B52E792EB7B860004C00D1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				29B52E772EB7B860004C00D1 /* Webroot */,
+				29B52E782EB7B860004C00D1 /* default-config.yaml */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		29BA55ED2EB7906400D8E575 = {
 			isa = PBXGroup;
 			children = (
+				29B52E792EB7B860004C00D1 /* Resources */,
 				29BA55F82EB7906400D8E575 /* Agent-Deck */,
 				29BA56062EB7906600D8E575 /* Agent-DeckTests */,
 				29BA56102EB7906600D8E575 /* Agent-DeckUITests */,
+				2915B1482EB7B0070011ED0D /* Frameworks */,
 				29BA55F72EB7906400D8E575 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +152,7 @@
 			);
 			name = "Agent-Deck";
 			packageProductDependencies = (
+				2915B1492EB7B0070011ED0D /* Yams */,
 			);
 			productName = "Agent-Deck";
 			productReference = 29BA55F62EB7906400D8E575 /* Agent-Deck.app */;
@@ -195,6 +236,9 @@
 			);
 			mainGroup = 29BA55ED2EB7906400D8E575;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 29BA55F72EB7906400D8E575 /* Products */;
 			projectDirPath = "";
@@ -212,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29B52E7A2EB7B877004C00D1 /* default-config.yaml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,20 +439,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Agent-Deck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GT75V5RX5R;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Agent-Deck/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-Deck";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,20 +474,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Agent-Deck.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GT75V5RX5R;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Agent-Deck/Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-Deck";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -573,6 +624,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2915B1492EB7B0070011ED0D /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 29BA55EE2EB7906400D8E575 /* Project object */;
 }

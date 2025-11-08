@@ -1,0 +1,22 @@
+{
+  "name": "agent-deck",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Stream Deck for AI agents - Monitor Claude Code, Cursor, and other agentic coding tools from your phone",
+  "scripts": {
+    "mobile": "pnpm -F @agent-deck/mobile start",
+    "mobile:ios": "pnpm -F @agent-deck/mobile ios",
+    "mobile:android": "pnpm -F @agent-deck/mobile android",
+    "typecheck": "pnpm -r typecheck",
+    "clean": "pnpm -r clean",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Workflow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        body {
+            overscroll-behavior: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .swipe-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .swipe-content {
+            transform: translateX(0);
+            transition: transform 0.3s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+        .swipe-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            z-index: 1;
+        }
+        .swipe-container:focus-within .swipe-content {
+            transform: translateX(-144px);}
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-dark": "#1A1B26",
+                        "secondary-dark": "#282A3A",
+                        "off-white": "#F8F82",
+                        "muted-gray": "#ABB2BF",
+                        "electric-blue": "#8BE9FD",
+                        "accent-green": "#50FA7B",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "4px",
+                        "md": "6px",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-primary-dark font-sans text-off-white">
+<div class="flex h-screen w-full flex-col">
+<header class="flex shrink-0 items-center justify-between bg-primary-dark px-4 py-1 h-12">
+<div class="w-12">
+<div class="relative flex h-2 w-2 items-center justify-start">
+<span class="h-2 w-2 rounded-full bg-electric-blue"></span>
+</div>
+</div>
+<div class="flex-1 text-center font-mono text-xs text-muted-gray">
+<span class="text-accent-green">2 active</span>
+<span> - </span>
+<span>3 idle</span>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-transparent text-muted-gray">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 flex-col overflow-y-auto px-2.5">
+<div class="flex flex-col gap-2 pt-0 pb-2">
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-secondary-dark p-2 rounded-md ring-1 ring-electric-blue">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0 text-electric-blue" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title><path d="M14.61 2.39L12 0l-2.61 2.39L12 4.78l2.61-2.39M12 24l2.61-2.39L12 19.22l-2.61 2.39L12 24m7.02-9.39L21.41 12l-2.39-2.61L16.63 12l2.39 2.61M2.39 9.39L0 12l2.39 2.61L4.78 12 2.39 9.39m9.61-4.71a4.91 4.91 0 00-4.82 4.9c0 2.72 2.18 4.91 4.82 4.91a4.9 4.9 0 004.9-4.91c0-2.71-2.18-4.9-4.9-4.9Z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">Sonnet 4.5</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">tests/api</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">feat/new-client</span>
+</div>
+<div class="truncate text-[13px] text-electric-blue">Awaiting your review</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5">
+<span class="material-symbols-outlined !text-[12px] !leading-none text-electric-blue" style="font-variation-settings: 'FILL' 1">smart_toy</span>
+</div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">14/200K</div>
+</div>
+</div>
+</div>
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-secondary-dark p-2 rounded-md">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title><path d="M14.61 2.39L12 0l-2.61 2.39L12 4.78l2.61-2.39M12 24l2.61-2.39L12 19.22l-2.61 2.39L12 24m7.02-9.39L21.41 12l-2.39-2.61L16.63 12l2.39 2.61M2.39 9.39L0 12l2.39 2.61L4.78 12 2.39 9.39m9.61-4.71a4.91 4.91 0 00-4.82 4.9c0 2.72 2.18 4.91 4.82 4.91a4.9 4.9 0 004.9-4.91c0-2.71-2.18-4.9-4.9-4.9Z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">Sonnet 4.5</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">src/api</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">feat/new-client</span>
+</div>
+<div class="truncate text-[13px] text-electric-blue">Generating client library from OpenAPI spec...</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5">
+<span class="material-symbols-outlined !text-[12px] !leading-none text-electric-blue" style="font-variation-settings: 'FILL' 1">smart_toy</span>
+<span class="material-symbols-outlined !text-[12px] !leading-none text-electric-blue" style="font-variation-settings: 'FILL' 1">smart_toy</span>
+</div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">79/200K</div>
+</div>
+</div>
+</div>
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-secondary-dark/70 p-2 rounded-md">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title><path d="M14.61 2.39L12 0l-2.61 2.39L12 4.78l2.61-2.39M12 24l2.61-2.39L12 19.22l-2.61 2.39L12 24m7.02-9.39L21.41 12l-2.39-2.61L16.63 12l2.39 2.61M2.39 9.39L0 12l2.39 2.61L4.78 12 2.39 9.39m9.61-4.71a4.91 4.91 0 00-4.82 4.9c0 2.72 2.18 4.91 4.82 4.91a4.9 4.9 0 004.9-4.91c0-2.71-2.18-4.9-4.9-4.9Z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">Opus 3.0</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">src/utils</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">refactor/helpers</span>
+</div>
+<div class="truncate text-[13px] text-muted-gray">Completed successfully</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5">
+</div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">128/200K</div>
+</div>
+</div>
+</div>
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-red-500/10 p-2 rounded-md">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0 text-red-400" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Anthropic</title><path d="M14.61 2.39L12 0l-2.61 2.39L12 4.78l2.61-2.39M12 24l2.61-2.39L12 19.22l-2.61 2.39L12 24m7.02-9.39L21.41 12l-2.39-2.61L16.63 12l2.39 2.61M2.39 9.39L0 12l2.39 2.61L4.78 12 2.39 9.39m9.61-4.71a4.91 4.91 0 00-4.82 4.9c0 2.72 2.18 4.91 4.82 4.91a4.9 4.9 0 004.9-4.91c0-2.71-2.18-4.9-4.9-4.9Z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">Opus 3.0</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">./</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">main</span>
+</div>
+<div class="truncate text-[13px] text-red-400">Error - Missing dependency</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5">
+</div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">200/200K</div>
+</div>
+</div>
+</div>
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-secondary-dark/70 p-2 rounded-md">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>OpenAI</title><path d="M18.17 3.12A12 12 0 0 0 12 0a12 12 0 0 0-.1.42 12 12 0 0 0-5.92 18.2 12 12 0 0 0 12.18 0A12 12 0 0 0 18.17 3.12zm-6.17 19.3a10.42 10.42 0 0 1-5.1-15.93A10.42 10.42 0 0 1 12 2.08a10.42 10.42 0 0 1 .1-.41 10.42 10.42 0 0 1 5.1 15.93 10.42 10.42 0 0 1-5.1 4.74zM4.1 8.35a1.57 1.57 0 0 1-1.07-2.68L8.1 1.25a1.57 1.57 0 0 1 2.15 2.27L5.18 8a1.57 1.57 0 0 1-1.08.35zm3.74 1.34a1.57 1.57 0 0 1-1.12-2.68l5.22-4.4a1.57 1.57 0 0 1 2 .28 1.57 1.57 0 0 1-.28 2L8.9 7.37a1.57 1.57 0 0 1-.88.23 1.57 1.57 0 0 1-.18 0zm-1 5.42a1.57 1.57 0 0 1-1.35-2.43l8.6-10.23a1.57 1.57 0 1 1 2.44 2.06l-8.6 10.23a1.57 1.57 0 0 1-1.09.37zm-.28 5.66a1.57 1.57 0 0 1-1.46-2.27L13.72 8a1.57 1.57 0 1 1 2.7 1.7L7.8 19.95a1.57 1.57 0 0 1-1.24.8zm3.2 1.34a1.57 1.57 0 0 1-1.54-2.15L13.4 10a1.57 1.57 0 0 1 3 .62 1.57 1.57 0 0 1-.62 3l-5.18 6.1a1.57 1.57 0 0 1-.84.2zm6.2-21.77A1.57 1.57 0 0 1 14.9 2.5l-5.1 4.3a1.57 1.57 0 0 1-2-.28 1.57 1.57 0 0 1 .28-2L13.2.1a1.57 1.57 0 0 1 1.77.27zm3.75 1.46a1.57 1.57 0 0 1-1.08.38 1.57 1.57 0 0 1-1.08-.49l-8.6-10.23a1.57 1.57 0 1 1 2.16-2.15l8.6 10.23a1.57 1.57 0 0 1 0 2.26zm-.18 5.54a1.57 1.57 0 0 1-1.25-.8l-7.23-9.13A1.57 1.57 0 0 1 10.4.73l7.24 9.13a1.57 1.57 0 0 1-1.16 2.55zm-3 5.66a1.57 1.57 0 0 1-1.54-.92L8.5 10.25a1.57 1.57 0 0 1 .74-2.92A1.57 1.57 0 0 1 10 8.07l5.18 6.1a1.57 1.57 0 0 1-.8 2.85zm-3.2 1.33a1.57 1.57 0 0 1-1.57-1.57V6.88a1.57 1.57 0 0 1 3.14 0V17a1.57 1.57 0 0 1-1.57 1.57z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">GPT-4o</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">docs/</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">update-readme</span>
+</div>
+<div class="truncate text-[13px] text-muted-gray">Idle</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5"></div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">5/128K</div>
+</div>
+</div>
+</div>
+<div class="swipe-container rounded-md" tabindex="0">
+<div class="swipe-actions">
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 bg-[#3A3C52] text-off-white">
+<span class="material-symbols-outlined">vertical_align_top</span>
+<span class="text-[10px] font-medium">Move to Top</span>
+</button>
+<button class="flex h-full w-[72px] flex-col items-center justify-center gap-1 rounded-r-md bg-[#543939] text-off-white">
+<span class="material-symbols-outlined">visibility_off</span>
+<span class="text-[10px] font-medium">Hide</span>
+</button>
+</div>
+<div class="swipe-content flex flex-col gap-1.5 bg-secondary-dark/70 p-2 rounded-md">
+<div class="flex items-center gap-1.5 font-mono text-[11px] text-muted-gray truncate">
+<svg class="h-4 w-4 shrink-0" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Google Gemini</title><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-4.5-8.5l4.5-8 4.5 8-4.5 8-4.5-8z" fill="currentColor"></path></svg>
+<span class="text-off-white/90">Gemini 1.5</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">src/components</span>
+<span class="text-muted-gray/50">|</span>
+<span class="truncate">fix/ui-glitch</span>
+</div>
+<div class="truncate text-[13px] text-muted-gray">Idle</div>
+<div class="flex items-end justify-between mt-1">
+<div class="flex items-center gap-0.5"></div>
+<div class="bg-primary-dark/50 px-1.5 py-0.5 rounded text-[10px] font-mono text-muted-gray">1024/1024K</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex h-5 w-full shrink-0 cursor-row-resize items-center justify-center">
+<div class="h-1.5 w-10 rounded-full bg-secondary-dark"></div>
+</div>
+<div class="flex flex-col overflow-y-auto px-2.5 pb-4">
+<div class="grid grid-cols-4 gap-2.5 py-2">
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">code_blocks</span>
+<span class="text-xs font-medium text-muted-gray">Focus IDE</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">terminal</span>
+<span class="text-xs font-medium text-muted-gray">Terminal</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">bug_report</span>
+<span class="text-xs font-medium text-muted-gray">Run Tests</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">commit</span>
+<span class="text-xs font-medium text-muted-gray">Commit</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">language</span>
+<span class="text-xs font-medium text-muted-gray">Browser</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">palette</span>
+<span class="text-xs font-medium text-muted-gray">Figma</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">description</span>
+<span class="text-xs font-medium text-muted-gray">Docs</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">rocket_launch</span>
+<span class="text-xs font-medium text-muted-gray">Deploy</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">replay</span>
+<span class="text-xs font-medium text-muted-gray">Revert</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">search</span>
+<span class="text-xs font-medium text-muted-gray">Search</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">data_object</span>
+<span class="text-xs font-medium text-muted-gray">DB View</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">memory</span>
+<span class="text-xs font-medium text-muted-gray">Context</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">share</span>
+<span class="text-xs font-medium text-muted-gray">Share</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">chat</span>
+<span class="text-xs font-medium text-muted-gray">Chat</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-secondary-dark p-2 text-muted-gray transition-colors hover:bg-secondary-dark/80">
+<span class="material-symbols-outlined text-4xl">folder</span>
+<span class="text-xs font-medium text-muted-gray">Files</span>
+</button>
+<button class="aspect-square flex flex-col items-center justify-center gap-1.5 rounded-md bg-electric-blue p-2 text-primary-dark transition-colors">
+<span class="material-symbols-outlined text-4xl">add</span>
+<span class="text-xs font-medium">Add New</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

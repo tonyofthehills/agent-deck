@@ -1,7 +1,7 @@
 # Quick start: Agent Deck MVP Development
 
 **Feature**: Agent Deck MVP (Phases 1-2)
-**Date**: 2025-01-02
+**Date**: 2025-01-05
 **Audience**: Developers implementing Agent Deck
 
 ## Prerequisites
@@ -172,24 +172,34 @@ touch AgentDeck-Mac/Resources/WebRoot/{index.html,app.js,styles.css,manifest.jso
 # Verify: Agent list displays, real-time updates work
 ```
 
-**Days 10-11: Window Switching**
+**Days 10-11: Window Switching + Custom Actions**
 ```bash
 # Create files:
 # Services/WindowManager.swift
+# Models/CustomAction.swift
+# Services/CustomActionManager.swift
 
 # Test: Tap instance card on mobile
 # Verify: Mac window switches within 1 second
+
+# Add custom actions to config.yaml
+# Test: Tap action button on mobile
+# Verify: AppleScript/Bash/URL executes correctly
 ```
 
-**Days 12-13: PWA Polish**
+**Days 12-13: PWA Polish + Custom Actions UI**
 ```bash
 # Edit files:
+# Resources/WebRoot/index.html (add 4-column grid + expandable panel)
+# Resources/WebRoot/app.js (add action handlers, drag interaction)
+# Resources/WebRoot/styles.css (grid layout, panel animation)
 # Resources/WebRoot/manifest.json
 # Resources/WebRoot/service-worker.js
 # Resources/WebRoot/icons/ (add PNG files)
 
 # Test: "Add to Home Screen" on iOS Safari
 # Verify: Icon appears, launches fullscreen
+# Verify: Custom actions grid displays with drag panel
 ```
 
 **Day 14: Integration Testing**
@@ -275,6 +285,41 @@ server:
   port: 8080  # Use different port if 3000 in use
 ```
 
+**Add Custom Actions** (User Story 6):
+```yaml
+customActions:
+  - id: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
+    label: "Open Figma"
+    icon: "🎨"
+    actionType: "applescript"
+    params:
+      script: 'tell application "Figma" to activate'
+    enabled: true
+
+  - id: "B2C3D4E5-F6A7-8901-BCDE-F12345678901"
+    label: "Git Status"
+    icon: "📊"
+    actionType: "bash"
+    params:
+      command: "/usr/bin/git"
+      args: ["status", "--short"]
+    enabled: true
+
+  - id: "C3D4E5F6-A7B8-9012-CDEF-123456789012"
+    label: "GitHub"
+    icon: "🐙"
+    actionType: "url"
+    params:
+      urlString: "https://github.com"
+    enabled: true
+```
+
+**Action Types**:
+- `applescript`: Execute AppleScript code (open apps, run system commands)
+- `bash`: Execute shell commands with arguments
+- `url`: Open URLs in default browser/app (http, https, file, mailto, tel)
+- `shortcuts`: Run macOS Shortcuts (Phase 5+, not in MVP)
+
 **Add Custom Agent Pattern** (Phase 3+):
 ```yaml
 agents:
@@ -346,6 +391,15 @@ log stream --predicate 'subsystem == "com.agentdeck.mac"'
 - [ ] Agent list displays with correct status colors
 - [ ] Status updates appear within 500ms
 - [ ] Tapping instance switches window within 1s
+- [ ] Custom actions grid displays below agent instances
+- [ ] Custom action buttons in 4-column grid layout
+- [ ] Tapping custom action executes within 2s
+- [ ] AppleScript action opens specified app
+- [ ] Bash action displays output in toast
+- [ ] URL action opens browser/app
+- [ ] Success/failure toasts appear correctly
+- [ ] Expandable panel drag interaction works
+- [ ] Panel state persists to localStorage
 - [ ] "Add to Home Screen" creates icon
 - [ ] Fullscreen launch works (no browser chrome)
 - [ ] Offline mode shows cached UI shell
@@ -432,7 +486,7 @@ top -pid $(pgrep -f AgentDeck-Mac)
 **Potential Phase 3 Features** (based on user validation):
 - Parsed output display (User Story 4)
 - Cursor/Windsurf support
-- Custom actions (bash, AppleScript from mobile)
+- Advanced custom actions (Shortcuts integration, action chaining)
 - Task history and logs
 - Native iOS app (if 100+ users request)
 

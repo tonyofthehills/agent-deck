@@ -25,10 +25,23 @@ build/
 Packages/
 Package.resolved
 
-# Node.js (if using Node backend)
+# Node.js & pnpm
 node_modules/
 npm-debug.log
 yarn-error.log
+pnpm-debug.log
+.pnpm-store/
+
+# React Native & Expo
+.expo/
+.expo-shared/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
 
 # Environment files
 .env

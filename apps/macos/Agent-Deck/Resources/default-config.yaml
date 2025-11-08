@@ -1,0 +1,21 @@
+# Agent Deck Default Configuration
+# Location: ~/.agent-deck/config.yaml (auto-created on first launch)
+# Spec: plan.md Configuration Storage section
+
+server:
+  port: 3000
+  host: "0.0.0.0"
+
+agents:
+  - name: "Claude Code"
+    process_pattern: "claude.*code"
+    enabled: true
+
+  # Phase 3+: Additional agent types (disabled in MVP)
+  - name: "Cursor"
+    process_pattern: "Cursor"
+    enabled: false
+
+  - name: "Windsurf"
+    process_pattern: "windsurf"
+    enabled: false

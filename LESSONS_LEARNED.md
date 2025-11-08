@@ -291,6 +291,211 @@ FSEventStreamStart(stream)
 
 ---
 
+### 8. Process Detection - Filter Child Processes 🔴 CRITICAL
+
+**Problem:** Agent Deck showing 14 instances when only 5 Claude Code processes running. Inflated count confusing users.
+
+**Root Cause:** Each Claude Code instance spawns multiple child processes:
+```
+38671 claude --dangerously-skip-permissions  ← Main instance (KEEP)
+38700 node ... (Zed external agent)          ← Child helper
+38707 claude (child of 38700)                ← Duplicate! (FILTER OUT)
+```
+
+**❌ What Doesn't Work:**
+```swift
+// WRONG: Accepts ALL processes with "claude" in name
+for line in output.split(separator: "\n") {
+    let commandLine = String(parts[1]).lowercased()
+    if commandLine.contains("claude") {
+        pids.append(pid)  // ❌ Includes duplicates!
+    }
+}
+// Result: 14 instances shown (3x the actual count)
+```
+
+**✅ What Works:**
+```swift
+// ✅ Filter out node processes
+if commandLine.contains("node") {
+    continue
+}
+
+// ✅ Filter out shell wrappers
+if commandLine.starts(with: "/bin/zsh") || commandLine.starts(with: "/bin/bash") {
+    continue
+}
+
+// ✅ Only accept processes starting with "claude "
+if !commandLine.starts(with: "claude ") {
+    continue
+}
+
+// ✅ Filter out claude processes whose parent is node (Zed external agents)
+if isChildOfNodeProcess(pid: pid) {
+    continue
+}
+
+pids.append(pid)
+// Result: 5 instances shown (correct count!)
+```
+
+**Helper Function:**
+```swift
+private func isChildOfNodeProcess(pid: pid_t) -> Bool {
+    let parentPID = getParentProcessID(pid: pid)
+    if parentPID == 0 { return false }
+
+    // Get parent process name
+    let task = Process()
+    task.executableURL = URL(fileURLWithPath: "/bin/ps")
+    task.arguments = ["-p", "\(parentPID)", "-o", "comm="]
+
+    let pipe = Pipe()
+    task.standardOutput = pipe
+
+    try? task.run()
+    task.waitUntilExit()
+
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    if let output = String(data: data, encoding: .utf8) {
+        let processName = output.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        return processName.contains("node")  // Return true if parent is node
+    }
+
+    return false
+}
+```
+
+**Why:**
+- Claude Code spawns helper processes (node for Zed external agents)
+- These helpers spawn their own `claude` child processes
+- Need to filter by:
+  1. Process command pattern ("claude " prefix)
+  2. Parent process type (not child of node)
+- Only count main `claude` executables
+
+**Detection Strategy:**
+1. Use `pgrep -ifl "claude"` to get all processes with "claude"
+2. Filter out node processes
+3. Filter out shell wrappers (zsh/bash)
+4. Check command starts with "claude " (main executable)
+5. Check parent is NOT node (filters Zed external agent children)
+
+**File:** `Services/ProcessMonitor.swift:218-283`
+
+**Testing:**
+```bash
+# Before fix:
+pgrep -ifl "claude" | grep -v Claude.app | wc -l
+# Output: 14 (inflated)
+
+# After fix (conceptual - shows filtering logic):
+pgrep -ifl "^claude " | while read line; do
+    pid=$(echo "$line" | awk '{print $1}')
+    ppid=$(ps -p $pid -o ppid= | tr -d ' ')
+    pname=$(ps -p $ppid -o comm= 2>/dev/null)
+    if [[ ! "$pname" =~ "node" ]]; then
+        echo "$pid"
+    fi
+done | wc -l
+# Output: 5 (correct)
+```
+
+---
+
+### 9. Display Last Statement Instead of "Idle" Text
+
+**Problem:** PWA showing "Idle - Waiting for input" when Claude finishes tasks. User wants to see what Claude actually said last, not generic idle message.
+
+**User Request:**
+> "I don't think I ever want to see that statement ['Idle - waiting for input']. When a new claude session is started, just 'Waiting for input' is fine, as well as after doing a slash clear function. otherwise it should have something meaningful to have as the visible text."
+
+**✅ Solution - Extract Last Statement from Transcript:**
+```swift
+// TranscriptParser.swift - NEW METHOD
+func extractLastStatement(from jsonl: String) -> String? {
+    let lines = jsonl.split(separator: "\n")
+
+    // Search backwards for most recent assistant message
+    for line in lines.reversed() {
+        guard let json = /* parse JSON */,
+              let role = message["role"] as? String,
+              role == "assistant",
+              let content = message["content"] as? [[String: Any]] else {
+            continue
+        }
+
+        // Extract text blocks (not tool_use or tool_result)
+        var textParts: [String] = []
+        for item in content {
+            if item["type"] as? String == "text",
+               let text = item["text"] as? String {
+                textParts.append(text)
+            }
+        }
+
+        if !textParts.isEmpty {
+            let combined = textParts.joined(separator: " ")
+            return String(combined.prefix(300))  // Truncate to 300 chars
+        }
+    }
+    return nil
+}
+```
+
+**Updated Display Logic (PWA):**
+```javascript
+// app.js - BEFORE
+if (instance.currentTaskDescription) {
+    taskDiv.textContent = instance.currentTaskDescription;
+} else if (instance.currentTask) {
+    taskDiv.textContent = instance.currentTask;
+} else {
+    taskDiv.textContent = 'Idle - waiting for input';  // ❌ Generic message
+}
+
+// app.js - AFTER
+if (instance.currentTaskDescription) {
+    taskDiv.textContent = instance.currentTaskDescription;  // Active task
+} else if (instance.currentTask) {
+    taskDiv.textContent = instance.currentTask;  // Fallback
+} else if (instance.lastStatement) {
+    taskDiv.textContent = instance.lastStatement;  // ✅ Show last thing Claude said
+    taskDiv.classList.add('idle');
+} else {
+    taskDiv.textContent = 'Waiting for input';  // ✅ Only for new sessions
+    taskDiv.classList.add('idle');
+}
+```
+
+**Display Hierarchy:**
+1. **Active task** (currentTaskDescription) - When working
+2. **Basic task** (currentTask) - Fallback
+3. **Last statement** (lastStatement) - When idle but has history ⭐ NEW
+4. **Waiting** ("Waiting for input") - Only for new sessions or after /clear
+
+**Example:**
+```
+Before: "Idle - Waiting for input"
+After:  "✅ Agent Deck killed successfully" (actual last message from Claude)
+```
+
+**Files Modified:**
+- `Services/TranscriptParser.swift:240-281` - Added `extractLastStatement()` method
+- `Models/AgentInstance.swift:67-70, 88, 104, 140-142` - Added `lastStatement` field
+- `Services/ProcessMonitor.swift:197, 211, 675` - Populate lastStatement
+- `Resources/WebRoot/app.js:271-285` - Updated display logic
+- `specs/001-mvp/data-model.md:34` - Documented lastStatement in spec
+
+**Why:**
+- Users want context, not generic messages
+- Last statement shows what Claude actually accomplished
+- "Waiting for input" only for truly new sessions
+- Provides better UX and continuity
+
+---
+
 ## Architecture Patterns
 
 ### Real-Time Monitoring Flow
@@ -454,7 +659,17 @@ Look for NSLog messages:
 
 ## Completed This Session
 
-✅ **Rich Data Enhancement (Tasks T141-T155)**
+✅ **Session 3: Process Detection Fixes + Last Statement Display**
+- Fixed duplicate instance detection (14 → 5 instances shown)
+- Added child process filtering (node, shell wrappers, Zed external agents)
+- Implemented `isChildOfNodeProcess()` helper for accurate counting
+- Added `lastStatement` extraction from transcript
+- Updated PWA to show last meaningful statement instead of "Idle - Waiting for input"
+- Updated data model spec with lastStatement field
+- Documented both fixes in LESSONS_LEARNED.md (sections 8 & 9)
+- Updated CHANGELOG.md for v0.1.1 release
+
+✅ **Session 2: Rich Data Enhancement (Tasks T141-T155)**
 - Created SubagentInfo and TodoItem models
 - Implemented TranscriptParser with full JSON path handling
 - Added git branch detection with 60s caching
@@ -464,6 +679,6 @@ Look for NSLog messages:
 
 ---
 
-**Last Updated:** 2025-01-05 (Session 2)
-**Session:** Rich data enhancement + TranscriptParser debugging
-**Status:** ✅ Complete - Full rich data displaying in PWA
+**Last Updated:** 2025-01-07 (Session 3)
+**Session:** Process detection fixes + Last statement display
+**Status:** ✅ Complete - Accurate instance count, contextual idle messages

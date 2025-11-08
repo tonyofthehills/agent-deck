@@ -12,18 +12,18 @@
 
 **Platform Strategy:** Hybrid approach
 - 🖥️ **Mac**: Native Swift/SwiftUI menubar app
-- 📱 **Mobile**: Progressive Web App (iOS/Android/iPad/any browser)
-- 🚫 **NOT building**: Native iOS/Android apps until Phase 7+ (after validation)
+- 📱 **Mobile**: React Native + Expo (iOS/Android with single codebase)
+- 🌐 **Web (Optional)**: PWA as backup web interface
 
-**Timeline:** 2-week MVP (Phases 1-2) → validate → iterate
+**Timeline:** 2.5-week MVP (Phase 0 + Phases 1-2) → validate → iterate
 
 ---
 
 ## Core Principles (Constitution)
 
 ### 1. Speed to Market
-- **2-week MVP over perfection**
-- Ship Phase 1-2 in 2 weeks, no scope creep
+- **2.5-week MVP over perfection** (0.5 weeks setup + 2 weeks development)
+- Ship Phase 0-2 in 2.5 weeks, no scope creep
 - Iterate based on user feedback
 - "Done is better than perfect" for MVP
 
@@ -33,11 +33,12 @@
 - No Electron, no web wrappers for Mac app
 - Single .app bundle (no Node.js dependency for users)
 
-### 3. Mobile Validation Strategy
-- **PWA first, native mobile later**
-- Works on ALL devices immediately (universal access)
-- No app store delays (iterate daily)
-- Build native iOS/Android only if 100+ users demand it (Phase 7+)
+### 3. Mobile-Native Experience
+- **React Native for mobile in MVP** (not PWA)
+- Native iOS/Android performance and UX
+- Shared TypeScript codebase (iOS + Android from single code)
+- Expo for rapid development and testing
+- PWA as optional backup/web interface
 
 ### 4. Local-First
 - **No cloud dependencies in Phase 1-6**
@@ -63,7 +64,7 @@
 ## NEVER
 
 - Be lazy by eliminating functionality to force completion
-- Make a workaround for a persistant issue that will need to be solved later in development
+- Make a workaround for a persistent issue that will need to be solved later in development
 
 ## ALWAYS
 
@@ -101,7 +102,7 @@ This project uses multiple Model Context Protocol (MCP) servers to enhance devel
 ```
 "Research the latest React Native performance optimization techniques"
 "Find best practices for Swift Concurrency with @MainActor"
-"How to implement real-time sync with Convex"
+"How to implement WebSocket reconnection in React Native"
 ```
 
 ---
@@ -125,9 +126,9 @@ This project uses multiple Model Context Protocol (MCP) servers to enhance devel
 
 **Example usage:**
 ```
-"How do I implement pagination with Convex mutations?"
+"How do I implement navigation with React Navigation v6?"
 "Show me best practices for SwiftUI navigation in macOS apps"
-"What's the proper way to handle errors in Unity ECS systems?"
+"What's the proper way to use expo-keep-awake?"
 ```
 
 ---
@@ -152,7 +153,7 @@ This project uses multiple Model Context Protocol (MCP) servers to enhance devel
 
 **Example usage:**
 ```
-"Get comprehensive Convex documentation for mutation patterns (use context7)"
+"Get comprehensive React Native documentation for hooks (use context7)"
 "Fetch detailed SwiftUI documentation for @Observable macro (use context7)"
 ```
 
@@ -176,7 +177,7 @@ This project uses multiple Model Context Protocol (MCP) servers to enhance devel
 
 **Example usage:**
 ```
-"What was I working on in Unity yesterday?" (use pieces)
+"What was I working on in React Native yesterday?" (use pieces)
 "Show me the approach I used for authentication in the last session" (use pieces)
 ```
 
@@ -195,9 +196,9 @@ Create Pieces memories for:
 **Purpose:** Security vulnerability scanning and code quality analysis
 
 **Use for:**
-- Scanning AI-generated Swift and JavaScript code before committing
+- Scanning AI-generated Swift and TypeScript/JavaScript code before committing
 - Finding macOS security issues (Keychain, file permissions, URL schemes)
-- Checking PWA security (XSS, CORS, CSP violations)
+- Checking React Native security (XSS, insecure storage, API exposure)
 - Validating authentication and session handling
 - OWASP Top 10 vulnerability detection
 
@@ -205,21 +206,22 @@ Create Pieces memories for:
 - `semgrep_scan` - Scan files for security vulnerabilities
 - `semgrep_scan_with_custom_rule` - Run custom security rules
 - `semgrep_scan_supply_chain` - Check dependency vulnerabilities
-- `get_supported_languages` - List supported languages (Swift, JavaScript, etc.)
+- `get_supported_languages` - List supported languages (Swift, TypeScript, JavaScript, etc.)
 
 **CRITICAL - Always scan before committing:**
-- AI-generated code (Swift menubar app OR JavaScript PWA)
+- AI-generated code (Swift menubar app OR React Native mobile)
 - Authentication/authorization changes
 - WebSocket communication code
 - Session management
 - File operations
 - API endpoint implementations
+- AsyncStorage usage (React Native)
 
 **Example usage:**
 ```
 "Scan the Swift authentication code for security issues"
-"Check the PWA JavaScript for XSS vulnerabilities"
-"Run supply chain scan after npm install"
+"Check the React Native TypeScript for insecure storage"
+"Run supply chain scan after pnpm install"
 ```
 
 **See "Security Scanning with Semgrep MCP" section below for comprehensive usage**
@@ -250,7 +252,7 @@ Create Pieces memories for:
 
 **2. Be Specific:**
 - Include library names and version numbers when known
-- Mention the specific technology stack
+- Mention the specific technology stack (React Native, Swift, etc.)
 - Reference error messages verbatim for troubleshooting
 
 **3. Don't Overuse:**
@@ -295,7 +297,7 @@ Create Pieces memories for:
 
 **CRITICAL: Always scan AI-generated code before committing!**
 
-Agent Deck is a dual-platform project (Swift menubar + JavaScript PWA) requiring security vigilance across both stacks.
+Agent Deck is a dual-platform project (Swift menubar + React Native mobile) requiring security vigilance across both stacks.
 
 ### When to Scan
 
@@ -304,10 +306,10 @@ Agent Deck is a dual-platform project (Swift menubar + JavaScript PWA) requiring
 2. Implement WebSocket communication or real-time updates
 3. Add file operations or path handling (Swift menubar app)
 4. Work with clipboard or pasteboard monitoring
-5. Implement PWA service worker or caching
+5. Implement AsyncStorage or SecureStore (React Native)
 6. Handle user input in either platform
-7. Add npm dependencies (`npm install` for PWA)
-8. Implement cross-origin communication (Swift ↔ PWA)
+7. Add pnpm dependencies (`pnpm install` for mobile)
+8. Implement cross-origin communication (Swift ↔ React Native)
 
 ### How to Scan
 
@@ -315,23 +317,23 @@ Agent Deck is a dual-platform project (Swift menubar + JavaScript PWA) requiring
 ```
 Scan these files with semgrep_scan:
 [
-  {"path": "/absolute/path/to/AgentDeck/Sources/Auth/*.swift"},
-  {"path": "/absolute/path/to/AgentDeck/Sources/WebSocket/*.swift"}
+  {"path": "/absolute/path/to/apps/macos/Agent-Deck/Sources/Auth/*.swift"},
+  {"path": "/absolute/path/to/apps/macos/Agent-Deck/Sources/WebSocket/*.swift"}
 ]
 ```
 
-**JavaScript PWA:**
+**React Native mobile app:**
 ```
 Scan these files with semgrep_scan:
 [
-  {"path": "/absolute/path/to/pwa/src/auth.js"},
-  {"path": "/absolute/path/to/pwa/service-worker.js"}
+  {"path": "/absolute/path/to/apps/mobile/src/services/websocket.ts"},
+  {"path": "/absolute/path/to/apps/mobile/src/screens/QRScannerScreen.tsx"}
 ]
 ```
 
-**Supply chain (after npm install):**
+**Supply chain (after pnpm install):**
 ```
-cd pwa && run semgrep_scan_supply_chain
+cd apps/mobile && semgrep_scan_supply_chain
 ```
 
 ### Priority Vulnerabilities by Platform
@@ -345,14 +347,14 @@ cd pwa && run semgrep_scan_supply_chain
 - Path traversal in file operations
 - Unvalidated WebSocket messages
 
-**JavaScript PWA (ERROR severity):**
-- XSS vulnerabilities in dynamic content
-- CORS misconfiguration
-- CSP bypass opportunities
-- Insecure localStorage for tokens
-- WebSocket injection attacks
-- Unvalidated service worker caching
-- DOM-based XSS
+**React Native Mobile (ERROR severity):**
+- XSS vulnerabilities in WebView components
+- Insecure AsyncStorage for tokens/secrets
+- Unvalidated WebSocket messages
+- Deep link injection attacks
+- Expo SDK misconfigurations
+- Insecure network requests
+- Unencrypted sensitive data storage
 
 **Cross-Platform (ERROR severity):**
 - Session token exposure in transit
@@ -364,10 +366,10 @@ cd pwa && run semgrep_scan_supply_chain
 
 ```
 1. Request: "Add WebSocket authentication"
-2. AI generates Swift + JavaScript code
+2. AI generates Swift + React Native code
 3. ⚠️ STOP - Scan both platforms:
    - semgrep_scan: Swift files
-   - semgrep_scan: JavaScript files
+   - semgrep_scan: TypeScript/TSX files
 4. Review findings: Fix all ERROR severity issues
 5. Re-scan to verify fixes
 6. ✅ Commit only when clean (no ERROR findings)
@@ -380,7 +382,7 @@ cd pwa && run semgrep_scan_supply_chain
 rules:
   - id: hardcoded-websocket-url
     pattern: let wsURL = "ws://..."
-    languages: [swift, javascript]
+    languages: [swift, typescript]
     severity: ERROR
     message: Never hardcode WebSocket URLs - use configuration
     metadata:
@@ -392,11 +394,11 @@ rules:
 rules:
   - id: unvalidated-websocket-message
     pattern: |
-      webSocket.onmessage = (event) => {
+      ws.onmessage = (event) => {
         ...
         eval(event.data)
       }
-    languages: [javascript]
+    languages: [typescript, javascript]
     severity: ERROR
     message: Never execute WebSocket data without validation
 ```
@@ -411,14 +413,14 @@ rules:
 - [ ] Validate all file paths
 - [ ] Implement request signing for API calls
 
-**JavaScript PWA:**
-- [ ] Sanitize all user input for XSS
-- [ ] Implement strict CSP headers
-- [ ] Validate CORS configuration
-- [ ] Use secure cookie flags (httpOnly, secure, sameSite)
-- [ ] Validate service worker cache sources
-- [ ] Implement XSS protection in WebSocket handlers
-- [ ] Use token refresh mechanism
+**React Native Mobile:**
+- [ ] Use SecureStore for sensitive data (not AsyncStorage)
+- [ ] Validate all WebSocket messages before processing
+- [ ] Sanitize all user input
+- [ ] Implement deep link validation
+- [ ] Use HTTPS for all network requests
+- [ ] Implement certificate pinning for production
+- [ ] Validate QR code scanner input
 
 **Cross-Platform:**
 - [ ] Encrypt sensitive data in transit
@@ -431,11 +433,11 @@ rules:
 
 | Scenario | Semgrep Command |
 |----------|-----------------|
-| Scan Swift auth code | `semgrep_scan: Sources/Auth/*.swift` |
-| Scan PWA JavaScript | `semgrep_scan: pwa/src/**/*.js` |
-| Check WebSocket code | `semgrep_scan: */WebSocket/*` |
-| Scan service worker | `semgrep_scan: pwa/service-worker.js` |
-| Supply chain (PWA) | `cd pwa && semgrep_scan_supply_chain` |
+| Scan Swift auth code | `semgrep_scan: apps/macos/*/Sources/Auth/*.swift` |
+| Scan React Native code | `semgrep_scan: apps/mobile/src/**/*.{ts,tsx}` |
+| Check WebSocket code | `semgrep_scan: */services/*WebSocket*` |
+| Scan shared types | `semgrep_scan: packages/shared-types/src/**/*.ts` |
+| Supply chain (mobile) | `cd apps/mobile && semgrep_scan_supply_chain` |
 | Custom rule | `semgrep_scan_with_custom_rule` |
 
 **See workspace CLAUDE.md for comprehensive Semgrep documentation**
@@ -500,23 +502,65 @@ rules:
 
 **Target:** macOS 12+ (Monterey or later)
 
-### Mobile Interface (Phase 1-2)
-**Type:** Progressive Web App (PWA)
-**Framework:** Vanilla JavaScript (NO React, NO Vue, NO build step)
-**Why vanilla JS:**
-- Fast loading on mobile
-- No build step = faster iteration
-- Simple for 2-week MVP
-- Easy to understand
+### Mobile Application (Phase 0-2)
+**Framework:** React Native 0.73+ (Expo SDK 50+)
+**Language:** TypeScript 5.0+
+**Runtime:** Node.js 18.0+
 
-**Files:**
-- `index.html` - Mobile UI structure
-- `app.js` - WebSocket client + UI logic
-- `styles.css` - Mobile-optimized dark mode styles
-- `manifest.json` - PWA manifest
-- `service-worker.js` - Offline support
+**Why React Native:**
+- Single codebase for iOS + Android
+- Native performance and UX
+- Rapid iteration with Expo
+- Hot reload for fast development
+- Large ecosystem of libraries
 
-**Location:** Embedded in Mac app at `Resources/WebRoot/`
+**Key Dependencies:**
+- `expo` (~50.0.0) - Expo SDK
+- `react-native` (0.73.x) - React Native framework
+- `@react-navigation/native` - Navigation
+- `@react-navigation/native-stack` - Stack navigator
+- `expo-keep-awake` - Prevent screen sleep during monitoring
+- `expo-barcode-scanner` - QR code scanning for pairing
+- `@react-native-async-storage/async-storage` - Local persistence
+- `react-native-gesture-handler` - Touch gestures
+- `react-native-reanimated` - Smooth animations
+
+**Project Structure:**
+- `app.json` - Expo configuration
+- `App.tsx` - Root component
+- `src/` - Application source code
+- `assets/` - Images, fonts, icons
+
+**Target Platforms:**
+- iOS 13.0+
+- Android API 21+ (Android 5.0+)
+
+### Monorepo Management (Phase 0)
+**Tool:** pnpm (v8+) with workspaces
+**Why pnpm:**
+- Faster than npm/yarn
+- Efficient disk space usage (hard links)
+- Strict dependency resolution
+- Native workspace support
+
+**Structure:**
+```
+apps/
+  macos/          # Swift menubar app
+  mobile/         # React Native + Expo
+packages/
+  shared-types/   # Shared TypeScript types
+```
+
+**Workspace Configuration:**
+- `pnpm-workspace.yaml` - Workspace definition
+- `package.json` (root) - Workspace scripts
+- `tsconfig.json` (root) - Shared TypeScript config
+
+**Shared Code:**
+- `@agent-deck/shared-types` - TypeScript types shared between mobile and future web clients
+- Includes: AgentInstance, WebSocketMessage, Configuration types
+- Prevents type drift between platforms
 
 ### Backend (Phase 1-2)
 **Embedded in Mac app** - No separate server process
@@ -529,96 +573,725 @@ rules:
 
 2. **Vapor** (full-featured)
    - HTTP + WebSocket in one
-   - Easier to serve PWA files
+   - Easier to serve static files
    - More overhead
 
 **Choose:** Start with Network.framework, migrate to Vapor if needed
 
 ---
 
-## File Structure (Expected)
+## File Structure (Monorepo)
 
 ```
-AgentDeck-Mac/                           # Xcode project
-├── AgentDeck.xcodeproj
-├── Sources/
-│   ├── AgentDeckApp.swift              # Main app entry
-│   ├── MenuBarController.swift         # Menubar app controller
-│   ├── Models/
-│   │   ├── AgentInstance.swift         # Agent data model
-│   │   ├── CustomAction.swift          # Action data model
-│   │   └── Configuration.swift         # App config
-│   ├── Services/
-│   │   ├── MonitorService.swift        # Process monitoring
-│   │   ├── ParserService.swift         # Output parsing
-│   │   ├── WebSocketServer.swift       # Real-time communication
-│   │   ├── HTTPServer.swift            # Serves PWA files
-│   │   ├── WindowManager.swift         # Window focus/switching
-│   │   └── ConfigurationService.swift  # YAML config management
-│   ├── Views/
-│   │   ├── MenuBarView.swift           # Menubar dropdown UI
-│   │   ├── SettingsView.swift          # Settings window
-│   │   ├── AgentListView.swift         # Agent status list
-│   │   └── QRCodeView.swift            # QR code for mobile pairing
-│   └── Utilities/
-│       ├── AppleScriptRunner.swift     # AppleScript execution
-│       ├── Logger.swift                # Logging
-│       └── NetworkDiscovery.swift      # Bonjour/mDNS
-├── Resources/
-│   ├── Assets.xcassets                 # App icons
-│   ├── default-config.yaml             # Default configuration
-│   ├── default-actions.yaml            # Default custom actions
-│   └── WebRoot/                        # ⭐ EMBEDDED PWA
-│       ├── index.html
-│       ├── app.js
-│       ├── styles.css
-│       ├── manifest.json
-│       ├── service-worker.js
-│       └── icons/
-│           ├── icon-192.png
-│           └── icon-512.png
-└── Info.plist
+agent-deck/                              # Root monorepo
+├── apps/
+│   ├── macos/                           # Swift menubar app
+│   │   ├── Agent-Deck.xcodeproj/
+│   │   ├── Agent-Deck/
+│   │   │   ├── Agent_DeckApp.swift      # Main app entry
+│   │   │   ├── AppDelegate.swift        # Menubar app controller
+│   │   │   ├── Models/
+│   │   │   │   ├── AgentInstance.swift  # Agent data model
+│   │   │   │   ├── CustomAction.swift   # Action data model
+│   │   │   │   └── Configuration.swift  # App config
+│   │   │   ├── Services/
+│   │   │   │   ├── ProcessMonitor.swift    # Process monitoring
+│   │   │   │   ├── TranscriptParser.swift  # Output parsing
+│   │   │   │   ├── WebSocketServer.swift   # Real-time communication
+│   │   │   │   ├── WindowManager.swift     # Window focus/switching
+│   │   │   │   └── ConfigManager.swift     # YAML config management
+│   │   │   ├── Views/
+│   │   │   │   ├── MenuBarView.swift       # Menubar dropdown UI
+│   │   │   │   ├── SettingsView.swift      # Settings window
+│   │   │   │   └── QRCodeView.swift        # QR code for mobile pairing
+│   │   │   └── Utilities/
+│   │   │       ├── AppleScriptRunner.swift # AppleScript execution
+│   │   │       └── Logger.swift            # Logging
+│   │   └── Resources/
+│   │       ├── Assets.xcassets/         # App icons
+│   │       ├── default-config.yaml      # Default configuration
+│   │       ├── default-actions.yaml     # Default custom actions
+│   │       └── WebRoot/                 # ⭐ Optional PWA (backup web interface)
+│   │           ├── index.html
+│   │           ├── app.js
+│   │           ├── styles.css
+│   │           └── manifest.json
+│   │
+│   └── mobile/                          # React Native + Expo
+│       ├── app.json                     # Expo configuration
+│       ├── package.json                 # Mobile dependencies
+│       ├── tsconfig.json                # TypeScript config
+│       ├── App.tsx                      # Root component
+│       ├── src/
+│       │   ├── screens/
+│       │   │   ├── AgentListScreen.tsx      # Main agent list view
+│       │   │   ├── QRScannerScreen.tsx      # QR scanner for pairing
+│       │   │   └── SettingsScreen.tsx       # App settings
+│       │   ├── components/
+│       │   │   ├── AgentCard.tsx            # Agent status card
+│       │   │   ├── ActionButton.tsx         # Custom action button
+│       │   │   └── ConnectionStatus.tsx     # WebSocket status indicator
+│       │   ├── hooks/
+│       │   │   ├── useWebSocket.ts          # WebSocket connection hook
+│       │   │   └── useKeepAwake.ts          # Screen awake hook
+│       │   ├── services/
+│       │   │   └── websocket.ts             # WebSocket client service
+│       │   ├── types/                       # Local types (imports from shared)
+│       │   │   └── index.ts
+│       │   ├── theme/
+│       │   │   └── colors.ts                # Dark mode colors
+│       │   └── utils/
+│       │       └── storage.ts               # AsyncStorage utilities
+│       └── assets/
+│           ├── icon.png
+│           └── splash.png
+│
+├── packages/                            # Shared JavaScript/TypeScript
+│   └── shared-types/
+│       ├── package.json
+│       ├── tsconfig.json
+│       └── src/
+│           ├── index.ts                 # Export all types
+│           ├── agent.ts                 # AgentInstance, AgentStatus types
+│           ├── websocket.ts             # WebSocketMessage types
+│           └── config.ts                # Configuration types
+│
+├── pnpm-workspace.yaml                  # Workspace definition
+├── package.json                         # Root package (workspace scripts)
+├── tsconfig.json                        # Shared TypeScript config
+├── .gitignore
+├── .specify/                            # SpecKit artifacts
+├── .claude/                             # SpecKit commands
+├── README.md
+└── CLAUDE.md                            # This file
+```
 
-# Root files (existing)
-├── .specify/                           # SpecKit artifacts
-├── .claude/                            # SpecKit commands
-├── agent-deck-spec-final.md            # Full specification
-├── README.md                           # Project overview
-├── CLAUDE.md                           # This file
-└── .gitignore
+---
+
+## Monorepo Development
+
+### Package Manager: pnpm
+
+**Why pnpm:**
+- **Fast**: 2x faster than npm, faster than yarn
+- **Efficient**: Hard links save disk space
+- **Strict**: Prevents phantom dependencies
+- **Native workspaces**: First-class monorepo support
+
+**Installation:**
+```bash
+# Install pnpm globally
+npm install -g pnpm
+
+# Or use Corepack (Node.js 16.13+)
+corepack enable
+corepack prepare pnpm@latest --activate
+```
+
+### Workspace Commands
+
+**Installing dependencies:**
+```bash
+# Install all dependencies (root + all workspaces)
+pnpm install
+
+# Add dependency to mobile app
+pnpm --filter mobile add react-native-reanimated
+
+# Add dependency to shared-types
+pnpm --filter @agent-deck/shared-types add -D typescript
+
+# Add dev dependency to root
+pnpm add -D -w prettier
+```
+
+**Running scripts:**
+```bash
+# Start Expo dev server (mobile)
+pnpm mobile
+
+# Run on iOS simulator
+pnpm mobile:ios
+
+# Run on Android emulator
+pnpm mobile:android
+
+# Type check all packages
+pnpm typecheck
+
+# Type check mobile only
+pnpm --filter mobile typecheck
+
+# Build shared types
+pnpm --filter @agent-deck/shared-types build
+```
+
+### Shared Types Usage
+
+**In mobile app (`apps/mobile/src/types/index.ts`):**
+```typescript
+// Import from shared package
+import type { AgentInstance, AgentStatus, WebSocketMessage } from '@agent-deck/shared-types';
+
+// Use in components
+export interface AgentListProps {
+  agents: AgentInstance[];
+  onFocus: (agent: AgentInstance) => void;
+}
+```
+
+**In shared-types package (`packages/shared-types/src/agent.ts`):**
+```typescript
+export interface AgentInstance {
+  id: string;
+  pid: number;
+  name: string;
+  agentType: 'claude-code' | 'cursor' | 'windsurf';
+  cwd: string;
+  status: AgentStatus;
+  currentTask?: string;
+  branch?: string;
+  model?: string;
+}
+
+export enum AgentStatus {
+  idle = 'idle',
+  running = 'running',
+  error = 'error',
+}
+```
+
+### Type Checking Across Packages
+
+**Root `tsconfig.json`:**
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@agent-deck/shared-types": ["./packages/shared-types/src"]
+    }
+  },
+  "references": [
+    { "path": "./packages/shared-types" },
+    { "path": "./apps/mobile" }
+  ]
+}
+```
+
+**Mobile `tsconfig.json`:**
+```json
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-native"
+  },
+  "references": [
+    { "path": "../../packages/shared-types" }
+  ]
+}
+```
+
+---
+
+## React Native Patterns
+
+### Expo Project Structure
+
+**app.json configuration:**
+```json
+{
+  "expo": {
+    "name": "Agent Deck",
+    "slug": "agent-deck-mobile",
+    "version": "1.0.0",
+    "platforms": ["ios", "android"],
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#1a1a1a"
+    },
+    "ios": {
+      "bundleIdentifier": "com.agentdeck.mobile",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.agentdeck.mobile",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1a1a1a"
+      }
+    }
+  }
+}
+```
+
+### Creating Screens and Components
+
+**AgentListScreen.tsx:**
+```typescript
+import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { AgentCard } from '../components/AgentCard';
+import { ConnectionStatus } from '../components/ConnectionStatus';
+import { useWebSocket } from '../hooks/useWebSocket';
+import type { AgentInstance } from '@agent-deck/shared-types';
+
+export function AgentListScreen() {
+  const { agents, connected, sendFocusCommand } = useWebSocket();
+
+  const handleFocus = (agent: AgentInstance) => {
+    sendFocusCommand(agent.id);
+  };
+
+  return (
+    <View style={styles.container}>
+      <ConnectionStatus connected={connected} />
+      <FlatList
+        data={agents}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <AgentCard agent={item} onPress={() => handleFocus(item)} />
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+  },
+});
+```
+
+**AgentCard.tsx:**
+```typescript
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import type { AgentInstance } from '@agent-deck/shared-types';
+
+interface AgentCardProps {
+  agent: AgentInstance;
+  onPress: () => void;
+}
+
+export function AgentCard({ agent, onPress }: AgentCardProps) {
+  const statusColor = {
+    idle: '#666',
+    running: '#4ade80',
+    error: '#f87171',
+  }[agent.status];
+
+  return (
+    <Pressable
+      style={({ pressed }) => [
+        styles.card,
+        { borderLeftColor: statusColor },
+        pressed && styles.pressed,
+      ]}
+      onPress={onPress}
+    >
+      <Text style={styles.name}>{agent.name}</Text>
+      <Text style={styles.task}>{agent.currentTask || 'Idle'}</Text>
+      {agent.branch && <Text style={styles.branch}>Branch: {agent.branch}</Text>}
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#2a2a2a',
+    borderLeftWidth: 4,
+    borderRadius: 8,
+    padding: 16,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    minHeight: 44, // Touch target size
+  },
+  pressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+  },
+  name: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  task: {
+    color: '#aaa',
+    fontSize: 14,
+    marginTop: 4,
+  },
+  branch: {
+    color: '#888',
+    fontSize: 12,
+    marginTop: 4,
+  },
+});
+```
+
+### useWebSocket Hook Pattern
+
+**hooks/useWebSocket.ts:**
+```typescript
+import { useState, useEffect, useCallback, useRef } from 'react';
+import type { AgentInstance, WebSocketMessage } from '@agent-deck/shared-types';
+
+export function useWebSocket() {
+  const [agents, setAgents] = useState<AgentInstance[]>([]);
+  const [connected, setConnected] = useState(false);
+  const wsRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout>();
+
+  const connect = useCallback((url: string) => {
+    try {
+      const ws = new WebSocket(url);
+
+      ws.onopen = () => {
+        console.log('Connected to Agent Deck');
+        setConnected(true);
+      };
+
+      ws.onmessage = (event) => {
+        const message: WebSocketMessage = JSON.parse(event.data);
+
+        if (message.type === 'update') {
+          setAgents(message.agents);
+        }
+      };
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      ws.onclose = () => {
+        console.log('Disconnected, reconnecting...');
+        setConnected(false);
+
+        // Auto-reconnect after 2 seconds
+        reconnectTimeoutRef.current = setTimeout(() => {
+          connect(url);
+        }, 2000);
+      };
+
+      wsRef.current = ws;
+    } catch (error) {
+      console.error('Failed to connect:', error);
+    }
+  }, []);
+
+  const disconnect = useCallback(() => {
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+    }
+    if (wsRef.current) {
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+  }, []);
+
+  const sendFocusCommand = useCallback((agentId: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'focus',
+        agentId,
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, [disconnect]);
+
+  return {
+    agents,
+    connected,
+    connect,
+    disconnect,
+    sendFocusCommand,
+  };
+}
+```
+
+### Keep Screen Awake Implementation
+
+**hooks/useKeepAwake.ts:**
+```typescript
+import { useEffect } from 'react';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+
+export function useKeepAwake() {
+  useEffect(() => {
+    // Prevent screen from sleeping while monitoring agents
+    activateKeepAwake();
+
+    return () => {
+      deactivateKeepAwake();
+    };
+  }, []);
+}
+```
+
+**Usage in AgentListScreen:**
+```typescript
+import { useKeepAwake } from '../hooks/useKeepAwake';
+
+export function AgentListScreen() {
+  useKeepAwake(); // Screen stays awake while on this screen
+
+  // ... rest of component
+}
+```
+
+### QR Scanner Implementation
+
+**screens/QRScannerScreen.tsx:**
+```typescript
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+
+interface QRScannerScreenProps {
+  onScan: (url: string) => void;
+}
+
+export function QRScannerScreen({ onScan }: QRScannerScreenProps) {
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
+    setScanned(true);
+
+    // Validate URL format: ws://192.168.x.x:3000
+    if (data.startsWith('ws://') || data.startsWith('http://')) {
+      onScan(data);
+    } else {
+      alert('Invalid QR code format');
+    }
+  };
+
+  if (hasPermission === null) {
+    return <Text style={styles.text}>Requesting camera permission...</Text>;
+  }
+
+  if (hasPermission === false) {
+    return <Text style={styles.text}>No access to camera</Text>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && (
+        <Button title="Tap to Scan Again" onPress={() => setScanned(false)} />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  text: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+});
+```
+
+### AsyncStorage for Persistence
+
+**utils/storage.ts:**
+```typescript
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const KEYS = {
+  SERVER_URL: '@agent_deck:server_url',
+  LAST_CONNECTED: '@agent_deck:last_connected',
+};
+
+export async function saveServerUrl(url: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(KEYS.SERVER_URL, url);
+  } catch (error) {
+    console.error('Failed to save server URL:', error);
+  }
+}
+
+export async function getServerUrl(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(KEYS.SERVER_URL);
+  } catch (error) {
+    console.error('Failed to get server URL:', error);
+    return null;
+  }
+}
+
+export async function saveLastConnectedTimestamp(): Promise<void> {
+  try {
+    await AsyncStorage.setItem(KEYS.LAST_CONNECTED, Date.now().toString());
+  } catch (error) {
+    console.error('Failed to save timestamp:', error);
+  }
+}
+```
+
+### Navigation with @react-navigation
+
+**App.tsx:**
+```typescript
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AgentListScreen } from './src/screens/AgentListScreen';
+import { QRScannerScreen } from './src/screens/QRScannerScreen';
+import { SettingsScreen } from './src/screens/SettingsScreen';
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="AgentList"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#1a1a1a',
+          },
+          headerTintColor: '#fff',
+        }}
+      >
+        <Stack.Screen
+          name="AgentList"
+          component={AgentListScreen}
+          options={{ title: 'Agent Deck' }}
+        />
+        <Stack.Screen
+          name="QRScanner"
+          component={QRScannerScreen}
+          options={{ title: 'Scan QR Code' }}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{ title: 'Settings' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+```
+
+### Theme and Dark Mode
+
+**theme/colors.ts:**
+```typescript
+export const colors = {
+  background: '#1a1a1a',
+  card: '#2a2a2a',
+  text: '#ffffff',
+  textSecondary: '#aaaaaa',
+  textTertiary: '#888888',
+  border: '#333333',
+
+  // Status colors
+  statusIdle: '#666666',
+  statusRunning: '#4ade80',
+  statusError: '#f87171',
+
+  // Accent
+  primary: '#3b82f6',
+  primaryPressed: '#2563eb',
+};
+```
+
+**Usage in components:**
+```typescript
+import { colors } from '../theme/colors';
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.background,
+  },
+  card: {
+    backgroundColor: colors.card,
+  },
+  text: {
+    color: colors.text,
+  },
+});
 ```
 
 ---
 
 ## Development Constraints
 
+### Phase 0 Focus (Monorepo Setup - 4 Days)
+
+**IN SCOPE:**
+- ✅ Create monorepo structure (apps/, packages/)
+- ✅ Configure pnpm workspaces
+- ✅ Set up shared-types package
+- ✅ Configure TypeScript across workspaces
+- ✅ Initialize React Native project with Expo
+- ✅ Set up basic navigation (React Navigation)
+- ✅ Configure dark mode theme
+
+**OUT OF SCOPE:**
+- ❌ Implementing features (Phase 1-2)
+- ❌ WebSocket integration (Phase 1-2)
+- ❌ QR scanner (Phase 1-2)
+
 ### Phase 1-2 Focus (MVP - 2 Weeks)
 
 **IN SCOPE:**
 - ✅ Monitoring only (no interaction with agents yet)
-- ✅ Claude Code process detection
+- ✅ Claude Code process detection (Swift)
 - ✅ Basic output parsing (current task)
 - ✅ Window switching (AppleScript)
-- ✅ WebSocket server (localhost:3000)
-- ✅ PWA mobile interface (basic)
-- ✅ QR code pairing
+- ✅ WebSocket server (Swift, localhost:3000)
+- ✅ React Native mobile interface (basic)
+- ✅ QR code pairing (Expo barcode scanner)
 - ✅ Custom actions (basic: AppleScript, Bash)
+- ✅ Real-time updates (WebSocket client in React Native)
 
 **OUT OF SCOPE (Phase 3+):**
 - ❌ Mobile interaction (approval prompts) - Phase 5
 - ❌ Full output parsing (todo list, status line) - Phase 3
 - ❌ Multiple agent types (Cursor, Windsurf) - Phase 3
 - ❌ Advanced custom actions - Phase 5
-- ❌ Native iOS/Android apps - Phase 7-8
 - ❌ Code signing/notarization - Phase 6
 - ❌ Auto-updates - Phase 6
 
 ### Performance Targets
 
+**macOS App:**
 - **CPU**: <2% idle, <5% active
 - **Memory**: <100MB RAM
 - **Latency**: <500ms status update, <1s window switch
 - **Startup**: <2s to menubar ready
+
+**React Native App:**
+- **Memory**: <150MB RAM on device
+- **FPS**: 60fps for animations
+- **WebSocket reconnect**: <2s
+- **Cold start**: <3s to first screen
 
 ### Security Constraints
 
@@ -627,6 +1300,7 @@ AgentDeck-Mac/                           # Xcode project
 - No authentication (trust local network)
 - No encryption (plain WebSocket, not WSS)
 - Accessibility permissions required (for window switching)
+- Camera permission required (for QR scanning)
 
 **Phase 6+ (Production):**
 - Add WSS (TLS) for non-local access
@@ -684,62 +1358,100 @@ class MonitorService: ObservableObject {
 }
 ```
 
-### PWA Patterns
+### React Native Patterns
 
-**WebSocket client:**
-```javascript
-class AgentDeckClient {
-    constructor() {
-        this.ws = null;
-        this.reconnectDelay = 1000;
-    }
+**Functional components with hooks:**
+```typescript
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 
-    connect(url) {
-        this.ws = new WebSocket(url);
+export function ExampleComponent() {
+  const [count, setCount] = useState(0);
 
-        this.ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            this.handleUpdate(data);
-        };
+  useEffect(() => {
+    // Component mounted
+    console.log('Mounted');
 
-        this.ws.onclose = () => {
-            // Auto-reconnect
-            setTimeout(() => this.connect(url), this.reconnectDelay);
-        };
-    }
+    return () => {
+      // Component unmounted (cleanup)
+      console.log('Unmounted');
+    };
+  }, []); // Empty deps = run once on mount
 
-    sendFocusCommand(instanceId) {
-        this.ws.send(JSON.stringify({
-            type: 'focus',
-            instanceId: instanceId
-        }));
-    }
+  return (
+    <View>
+      <Text>Count: {count}</Text>
+    </View>
+  );
 }
 ```
 
-**Touch-optimized UI:**
-```css
-/* Mobile-first, dark mode */
-:root {
-    --bg: #1a1a1a;
-    --text: #ffffff;
-    --border: #333;
+**Custom hooks for reusable logic:**
+```typescript
+// hooks/useConnectionStatus.ts
+import { useState, useEffect } from 'react';
+
+export function useConnectionStatus(ws: WebSocket | null) {
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    if (!ws) return;
+
+    const handleOpen = () => setConnected(true);
+    const handleClose = () => setConnected(false);
+
+    ws.addEventListener('open', handleOpen);
+    ws.addEventListener('close', handleClose);
+
+    return () => {
+      ws.removeEventListener('open', handleOpen);
+      ws.removeEventListener('close', handleClose);
+    };
+  }, [ws]);
+
+  return connected;
 }
+```
 
-.agent-card {
-    padding: 1rem;
-    margin: 0.5rem;
-    background: var(--bg);
-    border-left: 4px solid var(--status-color);
-    border-radius: 8px;
+**Pressable for touch interactions:**
+```typescript
+<Pressable
+  style={({ pressed }) => [
+    styles.button,
+    pressed && styles.buttonPressed,
+  ]}
+  onPress={handlePress}
+>
+  <Text style={styles.buttonText}>Press Me</Text>
+</Pressable>
+```
 
-    /* Touch target size */
-    min-height: 44px;
-}
+**Animated feedback with Reanimated:**
+```typescript
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
-.agent-card:active {
-    transform: scale(0.98);
-    opacity: 0.8;
+export function AnimatedCard() {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePress = () => {
+    scale.value = withSpring(0.95, {}, () => {
+      scale.value = withSpring(1);
+    });
+  };
+
+  return (
+    <Animated.View style={[styles.card, animatedStyle]}>
+      {/* Card content */}
+    </Animated.View>
+  );
 }
 ```
 
@@ -747,63 +1459,175 @@ class AgentDeckClient {
 
 ## Testing Strategy
 
-### Phase 1-2 (MVP)
+### Phase 0-2 (MVP)
 **Manual testing only** - No automated tests initially
 
 **Test checklist:**
+
+**macOS App:**
 - [ ] Mac app launches and appears in menubar
 - [ ] Detects running Claude Code processes
 - [ ] WebSocket server accepts connections
-- [ ] Mobile PWA loads and connects
 - [ ] Window switching works (AppleScript)
 - [ ] Status updates appear in real-time (<500ms)
-- [ ] Works on iPhone Safari
-- [ ] Works on Android Chrome
-- [ ] "Add to Home Screen" creates icon
+
+**React Native Mobile:**
+- [ ] App launches on iOS simulator
+- [ ] App launches on Android emulator
+- [ ] QR scanner opens camera
+- [ ] QR scanner connects to Mac app
+- [ ] Agent list displays connected agents
+- [ ] Agent cards show status (idle/running/error)
+- [ ] Tapping agent card focuses window
+- [ ] WebSocket reconnects after disconnect
+- [ ] Screen stays awake during monitoring
+- [ ] Dark mode renders correctly
+
+**Expo Go Testing:**
+```bash
+# Start Expo dev server
+pnpm mobile
+
+# Scan QR code with Expo Go app on physical device
+# OR press 'i' for iOS simulator, 'a' for Android emulator
+```
 
 ### Phase 3+ (Post-MVP)
 **Add automated tests:**
+
+**Swift:**
 - XCTest for Swift code
-- Jest for PWA JavaScript
+- Unit tests for ProcessMonitor
+- Unit tests for TranscriptParser
+
+**React Native:**
+- Jest for unit tests
+- React Native Testing Library for component tests
 - Integration tests for WebSocket
+
+**Example Jest test:**
+```typescript
+import { render, fireEvent } from '@testing-library/react-native';
+import { AgentCard } from '../AgentCard';
+
+describe('AgentCard', () => {
+  const mockAgent = {
+    id: '1',
+    pid: 12345,
+    name: 'Claude Code',
+    agentType: 'claude-code' as const,
+    cwd: '/Users/test/project',
+    status: 'running' as const,
+    currentTask: 'Implementing feature',
+  };
+
+  it('renders agent name', () => {
+    const { getByText } = render(
+      <AgentCard agent={mockAgent} onPress={() => {}} />
+    );
+
+    expect(getByText('Claude Code')).toBeTruthy();
+  });
+
+  it('calls onPress when tapped', () => {
+    const onPress = jest.fn();
+    const { getByText } = render(
+      <AgentCard agent={mockAgent} onPress={onPress} />
+    );
+
+    fireEvent.press(getByText('Claude Code'));
+    expect(onPress).toHaveBeenCalled();
+  });
+});
+```
 
 ---
 
 ## Common Pitfalls & How to Avoid
 
-### 1. ❌ Don't Build Native Mobile Apps Yet
-**Why:** Wastes 3-4 weeks before validating PWA works
-**Instead:** Ship PWA, get users, let them tell you if they need native
+### 1. ❌ Don't Use npm or yarn
+**Why:** pnpm is required for workspace management
+**Instead:** Always use pnpm for all package operations
 
-### 2. ❌ Don't Use Node.js for Backend
+**Wrong:**
+```bash
+npm install
+yarn add react-native-reanimated
+```
+
+**Correct:**
+```bash
+pnpm install
+pnpm --filter mobile add react-native-reanimated
+```
+
+### 2. ❌ Don't Import Relative Paths from Shared
+**Why:** Breaks TypeScript references and IDE autocomplete
+**Instead:** Use workspace protocol in package.json
+
+**Wrong:**
+```typescript
+import type { AgentInstance } from '../../../packages/shared-types/src/agent';
+```
+
+**Correct:**
+```json
+// apps/mobile/package.json
+{
+  "dependencies": {
+    "@agent-deck/shared-types": "workspace:*"
+  }
+}
+```
+
+```typescript
+import type { AgentInstance } from '@agent-deck/shared-types';
+```
+
+### 3. ❌ Don't Use Node.js for Backend
 **Why:** Forces users to install Node.js + dependencies
 **Instead:** Embed server in Swift app (single .app bundle)
 
-### 3. ❌ Don't Try to Parse All Agent Types Initially
+### 4. ❌ Don't Try to Parse All Agent Types Initially
 **Why:** Each agent (Cursor, Windsurf) has different output formats
 **Instead:** Start with Claude Code only (Phase 1-2), add others in Phase 3
 
-### 4. ❌ Don't Build Mobile Interaction in MVP
+### 5. ❌ Don't Build Mobile Interaction in MVP
 **Why:** Adds 1-2 weeks of complexity (PTY wrapper, stdin injection)
 **Instead:** Monitoring only in MVP, interaction in Phase 5
 
-### 5. ❌ Don't Use React/Vue for PWA
-**Why:** Build step slows iteration, overkill for simple UI
-**Instead:** Vanilla JS (fast loading, no build, easy to understand)
+### 6. ❌ Don't Store Sensitive Data in AsyncStorage
+**Why:** AsyncStorage is NOT encrypted on device
+**Instead:** Use expo-secure-store for tokens/secrets
 
-### 6. ❌ Don't Bind WebSocket to 127.0.0.1
+**Wrong:**
+```typescript
+await AsyncStorage.setItem('auth_token', token);
+```
+
+**Correct:**
+```typescript
+import * as SecureStore from 'expo-secure-store';
+await SecureStore.setItemAsync('auth_token', token);
+```
+
+### 7. ❌ Don't Bind WebSocket to 127.0.0.1
 **Why:** Mobile devices can't connect (different IP)
 **Instead:** Bind to 0.0.0.0:3000 (all interfaces on local network)
 
-### 7. ❌ Don't Forget Accessibility Permissions
+### 8. ❌ Don't Forget Accessibility Permissions
 **Why:** AppleScript window switching requires accessibility access
 **Instead:** Prompt user on first launch, document in README
+
+### 9. ❌ Don't Forget to Request Camera Permission
+**Why:** QR scanner won't work without camera permission
+**Instead:** Use expo-barcode-scanner's requestPermissionsAsync
 
 ---
 
 ## Configuration Management
 
-### YAML Config Files
+### YAML Config Files (macOS)
 
 **Location:** `~/.agent-deck/config.yaml`
 
@@ -989,33 +1813,77 @@ class WebSocketServer {
 }
 ```
 
-### Client (JavaScript)
+### Client (React Native TypeScript)
 
-```javascript
-const ws = new WebSocket('ws://192.168.1.100:3000');
+```typescript
+// services/websocket.ts
+import type { AgentInstance, WebSocketMessage } from '@agent-deck/shared-types';
 
-ws.onopen = () => {
-    console.log('Connected to Agent Deck');
-};
+export class WebSocketClient {
+  private ws: WebSocket | null = null;
+  private reconnectDelay = 2000;
+  private reconnectTimeout?: NodeJS.Timeout;
 
-ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
+  constructor(
+    private url: string,
+    private onUpdate: (agents: AgentInstance[]) => void,
+    private onConnectionChange: (connected: boolean) => void
+  ) {}
 
-    if (data.type === 'update') {
-        updateAgentList(data.instances);
+  connect() {
+    try {
+      this.ws = new WebSocket(this.url);
+
+      this.ws.onopen = () => {
+        console.log('Connected to Agent Deck');
+        this.onConnectionChange(true);
+      };
+
+      this.ws.onmessage = (event) => {
+        const message: WebSocketMessage = JSON.parse(event.data);
+
+        if (message.type === 'update') {
+          this.onUpdate(message.agents);
+        }
+      };
+
+      this.ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      this.ws.onclose = () => {
+        console.log('Disconnected, reconnecting...');
+        this.onConnectionChange(false);
+
+        // Auto-reconnect
+        this.reconnectTimeout = setTimeout(() => {
+          this.connect();
+        }, this.reconnectDelay);
+      };
+    } catch (error) {
+      console.error('Failed to connect:', error);
     }
-};
+  }
 
-ws.onerror = (error) => {
-    console.error('WebSocket error:', error);
-};
+  disconnect() {
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+    }
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+  }
 
-ws.onclose = () => {
-    console.log('Disconnected, reconnecting...');
-    setTimeout(() => {
-        // Reconnect logic
-    }, 1000);
-};
+  sendFocusCommand(agentId: string) {
+    if (this.ws?.readyState === WebSocket.OPEN) {
+      this.ws.send(JSON.stringify({
+        type: 'focus',
+        agentId,
+      }));
+    }
+  }
+}
 ```
 
 ---
@@ -1048,7 +1916,7 @@ func generateQRCode(from string: String) -> NSImage? {
 
 // Usage:
 let localIP = getLocalIPAddress() // "192.168.1.100"
-let url = "http://\(localIP):3000"
+let url = "ws://\(localIP):3000"
 let qrCode = generateQRCode(from: url)
 ```
 
@@ -1116,12 +1984,6 @@ let discovery = NetworkDiscovery()
 discovery.publish(port: 3000)
 ```
 
-**Mobile discovery (JavaScript):**
-```javascript
-// Most browsers don't support mDNS/Bonjour
-// Use QR code instead (simpler, more reliable)
-```
-
 ---
 
 ## Error Handling
@@ -1161,27 +2023,91 @@ do {
 }
 ```
 
-### JavaScript (PWA)
+### React Native (TypeScript)
 
-```javascript
-class ErrorHandler {
-    static show(message, details = '') {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-toast';
-        errorDiv.innerHTML = `
-            <strong>Error:</strong> ${message}
-            ${details ? `<br><small>${details}</small>` : ''}
-        `;
-        document.body.appendChild(errorDiv);
-
-        setTimeout(() => errorDiv.remove(), 5000);
-    }
+```typescript
+// utils/errors.ts
+export class ConnectionError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ConnectionError';
+  }
 }
 
-// Usage:
-ws.onerror = (error) => {
-    ErrorHandler.show('Connection lost', 'Reconnecting...');
-};
+export function handleWebSocketError(error: any) {
+  if (error instanceof ConnectionError) {
+    // Show user-friendly message
+    Alert.alert(
+      'Connection Error',
+      'Could not connect to Agent Deck. Make sure the Mac app is running and you are on the same WiFi network.',
+      [{ text: 'OK' }]
+    );
+  } else {
+    // Generic error
+    Alert.alert('Error', error.message || 'An unexpected error occurred');
+  }
+}
+```
+
+**Error boundaries (React Native):**
+```typescript
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+interface Props {
+  children: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error?: Error;
+}
+
+export class ErrorBoundary extends Component<Props, State> {
+  state: State = {
+    hasError: false,
+  };
+
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('ErrorBoundary caught:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>Something went wrong</Text>
+          <Text style={styles.message}>{this.state.error?.message}</Text>
+        </View>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1a1a1a',
+  },
+  title: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  message: {
+    color: '#aaa',
+    fontSize: 14,
+    marginTop: 8,
+  },
+});
 ```
 
 ---
@@ -1220,6 +2146,41 @@ Logger.error("Failed to parse agent output", log: .monitoring)
 log stream --predicate 'subsystem == "com.agentdeck.app"'
 ```
 
+### React Native
+
+**Console logging (development):**
+```typescript
+console.log('Info message');
+console.warn('Warning message');
+console.error('Error message');
+```
+
+**Structured logging (production):**
+```typescript
+// utils/logger.ts
+export const logger = {
+  info: (message: string, data?: any) => {
+    if (__DEV__) {
+      console.log(`[INFO] ${message}`, data);
+    }
+    // In production, send to logging service
+  },
+
+  error: (message: string, error?: any) => {
+    if (__DEV__) {
+      console.error(`[ERROR] ${message}`, error);
+    }
+    // In production, send to error tracking service (Sentry, etc.)
+  },
+
+  warn: (message: string, data?: any) => {
+    if (__DEV__) {
+      console.warn(`[WARN] ${message}`, data);
+    }
+  },
+};
+```
+
 ---
 
 ## Resources & References
@@ -1229,6 +2190,9 @@ log stream --predicate 'subsystem == "com.agentdeck.app"'
 - SpecKit Docs: https://speckit.org
 - Swift Documentation: https://swift.org/documentation/
 - SwiftUI Tutorials: https://developer.apple.com/tutorials/swiftui
+- React Native Docs: https://reactnative.dev/docs/getting-started
+- Expo Docs: https://docs.expo.dev/
+- pnpm Docs: https://pnpm.io/
 
 **Similar Projects:**
 - Touch Portal: https://www.touch-portal.com/
@@ -1239,7 +2203,9 @@ log stream --predicate 'subsystem == "com.agentdeck.app"'
 - Swift Package Manager: https://swift.org/package-manager/
 - Vapor (if using): https://vapor.codes/
 - WebSocket Protocol: https://datatracker.ietf.org/doc/html/rfc6455
-- PWA Spec: https://web.dev/progressive-web-apps/
+- React Navigation: https://reactnavigation.org/
+- Expo Keep Awake: https://docs.expo.dev/versions/latest/sdk/keep-awake/
+- Expo Barcode Scanner: https://docs.expo.dev/versions/latest/sdk/bar-code-scanner/
 
 ---
 
@@ -1257,11 +2223,16 @@ specify check
 /speckit.tasks           # Break into tasks
 /speckit.implement       # Start coding
 
-# 3. Xcode project
-open AgentDeck-Mac/AgentDeck.xcodeproj
+# 3. Monorepo
+pnpm install             # Install all dependencies
+pnpm mobile              # Start Expo dev server
+pnpm mobile:ios          # Run on iOS simulator
+pnpm mobile:android      # Run on Android emulator
+pnpm typecheck           # Type check all packages
 
-# 4. Run locally
-# (Command+R in Xcode)
+# 4. Xcode project (Swift)
+cd apps/macos && open Agent-Deck.xcodeproj
+# (Command+R in Xcode to run)
 ```
 
 **When testing:**
@@ -1275,13 +2246,19 @@ ps aux | grep claude
 # Test WebSocket (Terminal 2)
 wscat -c ws://localhost:3000
 
-# View logs
+# View logs (macOS)
 log stream --predicate 'subsystem == "com.agentdeck.app"'
 
-# Test on iPhone
-# 1. Get local IP: ifconfig | grep "inet "
-# 2. Open Safari on iPhone: http://[YOUR-IP]:3000
-# 3. Tap "Add to Home Screen"
+# Test React Native on iPhone (Expo Go)
+# 1. Install Expo Go from App Store
+# 2. pnpm mobile
+# 3. Scan QR code with Expo Go app
+
+# Test on iOS simulator
+pnpm mobile:ios
+
+# Test on Android emulator
+pnpm mobile:android
 ```
 
 ---
@@ -1300,7 +2277,7 @@ for i in 0..<numEvents {
 }
 ```
 
-**File:** `Services/TranscriptWatcher.swift:58`
+**File:** `apps/macos/Agent-Deck/Services/TranscriptWatcher.swift:58`
 
 ### 🔴 @Published with Structs
 **Mutating array elements in-place does NOT trigger Combine.** Must replace the element.
@@ -1315,7 +2292,7 @@ updated.currentTask = "new"
 instances[index] = updated
 ```
 
-**File:** `Services/ProcessMonitor.swift:514-520`
+**File:** `apps/macos/Agent-Deck/Services/ProcessMonitor.swift:514-520`
 
 ### 🔴 Path Matching
 **Don't try to convert directory names to paths.** Read `cwd` from transcript JSON.
@@ -1327,7 +2304,7 @@ func readCwdFromTranscript(path: String) -> String? {
 }
 ```
 
-**File:** `Services/ProcessMonitor.swift:532`
+**File:** `apps/macos/Agent-Deck/Services/ProcessMonitor.swift:532`
 
 ### Pieces Memories Created
 Three comprehensive memories saved covering:
@@ -1341,23 +2318,28 @@ Three comprehensive memories saved covering:
 
 ## Version
 
-**CLAUDE.md Version:** 1.1
-**Last Updated:** 2025-01-05
-**Agent Deck Phase:** MVP Phase 1-2 (Real-time monitoring complete)
+**CLAUDE.md Version:** 2.0
+**Last Updated:** 2025-01-08
+**Agent Deck Phase:** Phase 0 (Monorepo setup) → Phase 1-2 (React Native MVP)
 **SpecKit Template:** spec-kit-template-claude-sh-v0.0.79
 
 ---
 
-**Remember:** Speed to market. 2-week MVP. Ship, validate, iterate. 🚀
+**Remember:** Speed to market. 2.5-week MVP (0.5 weeks setup + 2 weeks dev). Ship, validate, iterate. 🚀
 
 ## Active Technologies
-- Swift 5.7+ (Swift 6 compatible targeting macOS 12+) (001-mvp)
+- Swift 5.7+ (Swift 6 compatible targeting macOS 12+) - macOS menubar app
+- React Native 0.73+ (Expo SDK 50+) - Mobile app (iOS/Android)
+- TypeScript 5.0+ - Mobile app and shared types
+- pnpm 8+ - Monorepo package management
 - FSEvents (macOS file system monitoring)
 - Combine (reactive state management)
-- WebSocket (real-time PWA updates)
+- WebSocket (real-time communication)
 
 ## Recent Changes
+- 2025-01-08: ✅ Updated CLAUDE.md for monorepo + React Native architecture (Constitution v2.0)
+- 2025-01-08: Added comprehensive React Native patterns and monorepo development sections
+- 2025-01-08: Updated file structure to reflect apps/macos, apps/mobile, packages/shared-types
 - 2025-01-05: ✅ Real-time monitoring complete (FSEvents + Combine + WebSocket)
 - 2025-01-05: Added LESSONS_LEARNED.md with critical patterns
 - 2025-01-05: Created 3 Pieces memories for future reference
-- 001-mvp: Added Swift 5.7+ (Swift 6 compatible targeting macOS 12+)

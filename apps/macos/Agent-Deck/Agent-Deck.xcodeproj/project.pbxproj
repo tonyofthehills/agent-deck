@@ -1,0 +1,661 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2915B14A2EB7B0070011ED0D /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 2915B1492EB7B0070011ED0D /* Yams */; };
+		29B52E7A2EB7B877004C00D1 /* default-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 29B52E782EB7B860004C00D1 /* default-config.yaml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		29BA56042EB7906600D8E575 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29BA55EE2EB7906400D8E575 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29BA55F52EB7906400D8E575;
+			remoteInfo = "Agent-Deck";
+		};
+		29BA560E2EB7906600D8E575 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29BA55EE2EB7906400D8E575 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29BA55F52EB7906400D8E575;
+			remoteInfo = "Agent-Deck";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		29B52E782EB7B860004C00D1 /* default-config.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "default-config.yaml"; sourceTree = "<group>"; };
+		29BA55F62EB7906400D8E575 /* Agent-Deck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agent-Deck.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29BA56032EB7906600D8E575 /* Agent-DeckTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Agent-DeckTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29BA560D2EB7906600D8E575 /* Agent-DeckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Agent-DeckUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		29BA56212EB794FA00D8E575 /* Exceptions for "Agent-Deck" folder in "Agent-Deck" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 29BA55F52EB7906400D8E575 /* Agent-Deck */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		29BA55F82EB7906400D8E575 /* Agent-Deck */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				29BA56212EB794FA00D8E575 /* Exceptions for "Agent-Deck" folder in "Agent-Deck" target */,
+			);
+			path = "Agent-Deck";
+			sourceTree = "<group>";
+		};
+		29BA56062EB7906600D8E575 /* Agent-DeckTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Agent-DeckTests";
+			sourceTree = "<group>";
+		};
+		29BA56102EB7906600D8E575 /* Agent-DeckUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Agent-DeckUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29BA55F32EB7906400D8E575 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2915B14A2EB7B0070011ED0D /* Yams in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA56002EB7906600D8E575 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA560A2EB7906600D8E575 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2915B1482EB7B0070011ED0D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29B52E762EB7B860004C00D1 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = icons;
+			sourceTree = "<group>";
+		};
+		29B52E772EB7B860004C00D1 /* Webroot */ = {
+			isa = PBXGroup;
+			children = (
+				29B52E762EB7B860004C00D1 /* icons */,
+			);
+			path = Webroot;
+			sourceTree = "<group>";
+		};
+		29B52E792EB7B860004C00D1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				29B52E772EB7B860004C00D1 /* Webroot */,
+				29B52E782EB7B860004C00D1 /* default-config.yaml */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		29BA55ED2EB7906400D8E575 = {
+			isa = PBXGroup;
+			children = (
+				29B52E792EB7B860004C00D1 /* Resources */,
+				29BA55F82EB7906400D8E575 /* Agent-Deck */,
+				29BA56062EB7906600D8E575 /* Agent-DeckTests */,
+				29BA56102EB7906600D8E575 /* Agent-DeckUITests */,
+				2915B1482EB7B0070011ED0D /* Frameworks */,
+				29BA55F72EB7906400D8E575 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		29BA55F72EB7906400D8E575 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29BA55F62EB7906400D8E575 /* Agent-Deck.app */,
+				29BA56032EB7906600D8E575 /* Agent-DeckTests.xctest */,
+				29BA560D2EB7906600D8E575 /* Agent-DeckUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		29BA55F52EB7906400D8E575 /* Agent-Deck */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29BA56172EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-Deck" */;
+			buildPhases = (
+				29BA55F22EB7906400D8E575 /* Sources */,
+				29BA55F32EB7906400D8E575 /* Frameworks */,
+				29BA55F42EB7906400D8E575 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				29BA55F82EB7906400D8E575 /* Agent-Deck */,
+			);
+			name = "Agent-Deck";
+			packageProductDependencies = (
+				2915B1492EB7B0070011ED0D /* Yams */,
+			);
+			productName = "Agent-Deck";
+			productReference = 29BA55F62EB7906400D8E575 /* Agent-Deck.app */;
+			productType = "com.apple.product-type.application";
+		};
+		29BA56022EB7906600D8E575 /* Agent-DeckTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29BA561A2EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-DeckTests" */;
+			buildPhases = (
+				29BA55FF2EB7906600D8E575 /* Sources */,
+				29BA56002EB7906600D8E575 /* Frameworks */,
+				29BA56012EB7906600D8E575 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				29BA56052EB7906600D8E575 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				29BA56062EB7906600D8E575 /* Agent-DeckTests */,
+			);
+			name = "Agent-DeckTests";
+			packageProductDependencies = (
+			);
+			productName = "Agent-DeckTests";
+			productReference = 29BA56032EB7906600D8E575 /* Agent-DeckTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		29BA560C2EB7906600D8E575 /* Agent-DeckUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29BA561D2EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-DeckUITests" */;
+			buildPhases = (
+				29BA56092EB7906600D8E575 /* Sources */,
+				29BA560A2EB7906600D8E575 /* Frameworks */,
+				29BA560B2EB7906600D8E575 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				29BA560F2EB7906600D8E575 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				29BA56102EB7906600D8E575 /* Agent-DeckUITests */,
+			);
+			name = "Agent-DeckUITests";
+			packageProductDependencies = (
+			);
+			productName = "Agent-DeckUITests";
+			productReference = 29BA560D2EB7906600D8E575 /* Agent-DeckUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29BA55EE2EB7906400D8E575 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					29BA55F52EB7906400D8E575 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					29BA56022EB7906600D8E575 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 29BA55F52EB7906400D8E575;
+					};
+					29BA560C2EB7906600D8E575 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 29BA55F52EB7906400D8E575;
+					};
+				};
+			};
+			buildConfigurationList = 29BA55F12EB7906400D8E575 /* Build configuration list for PBXProject "Agent-Deck" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 29BA55ED2EB7906400D8E575;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 29BA55F72EB7906400D8E575 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29BA55F52EB7906400D8E575 /* Agent-Deck */,
+				29BA56022EB7906600D8E575 /* Agent-DeckTests */,
+				29BA560C2EB7906600D8E575 /* Agent-DeckUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		29BA55F42EB7906400D8E575 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29B52E7A2EB7B877004C00D1 /* default-config.yaml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA56012EB7906600D8E575 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA560B2EB7906600D8E575 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		29BA55F22EB7906400D8E575 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA55FF2EB7906600D8E575 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29BA56092EB7906600D8E575 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		29BA56052EB7906600D8E575 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29BA55F52EB7906400D8E575 /* Agent-Deck */;
+			targetProxy = 29BA56042EB7906600D8E575 /* PBXContainerItemProxy */;
+		};
+		29BA560F2EB7906600D8E575 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29BA55F52EB7906400D8E575 /* Agent-Deck */;
+			targetProxy = 29BA560E2EB7906600D8E575 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		29BA56152EB7906600D8E575 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		29BA56162EB7906600D8E575 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		29BA56182EB7906600D8E575 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Agent-Deck.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Agent-Deck/Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-Deck";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		29BA56192EB7906600D8E575 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Agent-Deck.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Agent-Deck/Info.plist";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-Deck";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		29BA561B2EB7906600D8E575 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-DeckTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Agent-Deck.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Agent-Deck";
+			};
+			name = Debug;
+		};
+		29BA561C2EB7906600D8E575 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-DeckTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Agent-Deck.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Agent-Deck";
+			};
+			name = Release;
+		};
+		29BA561E2EB7906600D8E575 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-DeckUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Agent-Deck";
+			};
+			name = Debug;
+		};
+		29BA561F2EB7906600D8E575 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GT75V5RX5R;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.TheHillPack.Agent-DeckUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = "Agent-Deck";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		29BA55F12EB7906400D8E575 /* Build configuration list for PBXProject "Agent-Deck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29BA56152EB7906600D8E575 /* Debug */,
+				29BA56162EB7906600D8E575 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29BA56172EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-Deck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29BA56182EB7906600D8E575 /* Debug */,
+				29BA56192EB7906600D8E575 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29BA561A2EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-DeckTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29BA561B2EB7906600D8E575 /* Debug */,
+				29BA561C2EB7906600D8E575 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29BA561D2EB7906600D8E575 /* Build configuration list for PBXNativeTarget "Agent-DeckUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29BA561E2EB7906600D8E575 /* Debug */,
+				29BA561F2EB7906600D8E575 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2915B1492EB7B0070011ED0D /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 29BA56222EB7956900D8E575 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 29BA55EE2EB7906400D8E575 /* Project object */;
+}

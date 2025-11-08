@@ -1,277 +1,355 @@
-# Data Model: Agent Deck MVP
+# Data Model - Agent Deck MVP
 
-**Feature**: Agent Deck MVP (Phases 1-2)
-**Date**: 2025-01-02
-**Status**: Phase 1 Design
-
-## Overview
-
-This document defines the core entities for Agent Deck MVP. All entities are designed for in-memory state management with minimal persistence (YAML config, UserDefaults, localStorage).
+**Version:** 1.0
+**Phase:** 001-mvp
+**Last Updated:** 2025-01-05
 
 ---
 
-## Entity 1: AgentInstance
+## Overview
 
-**Purpose**: Represents a running AI coding agent process being monitored by Agent Deck.
+This document defines all data entities, their relationships, validation rules, and persistence strategies for Agent Deck MVP (Phases 1-2).
 
-### Attributes
+**Key Principles:**
+- Local-first (no cloud sync in MVP)
+- Swift Codable for native models
+- JSON serialization for WebSocket transport
+- YAML for user-editable configuration
+- localStorage for PWA persistence
 
-| Attribute | Type | Nullable | Description | Validation |
-|-----------|------|----------|-------------|------------|
-| `id` | UUID | No | Unique identifier for this agent instance | Generated on detection |
-| `pid` | Int32 | No | Process ID from macOS | Must be valid running process |
-| `agentType` | String | No | Agent type identifier (e.g., "claude-code") | Enum: "claude-code" (Phase 1-2) |
-| `workingDirectory` | String | No | Current working directory path | Must be absolute path |
-| `status` | AgentStatus | No | Current agent status | See AgentStatus enum |
-| `currentTask` | String | Yes | Parsed task description from stdout | Max length: 200 chars |
-| `lastActivityTimestamp` | Date | No | Timestamp of last status change | ISO 8601 format |
-| `windowIdentifier` | String | Yes | macOS window ID for focus switching | Optional in Phase 1-2 |
-| `modelName` | String | Yes | AI model name (e.g., "claude-sonnet-4-5-20250929") | Extracted from transcript |
-| `gitBranch` | String | Yes | Current git branch name | Extracted from git commands or transcript |
-| `activeSubagents` | Array<SubagentInfo> | Yes | List of running subagents | See SubagentInfo entity |
-| `todos` | Array<TodoItem> | Yes | Parsed todo list with status | See TodoItem entity |
-| `currentTaskDescription` | String | Yes | Detailed task description from activeForm | Max length: 500 chars |
+---
 
-### Relationships
+## Core Entities
 
-- **Has many**: StatusUpdate (1:N - one instance generates many status updates)
-- **Monitored by**: ProcessMonitor service (composition)
+### 1. AgentInstance
 
-### State Transitions
+**Purpose:** Represents a single running AI agent process (e.g., Claude Code, Cursor)
 
-```
-nil → idle (on process detection)
-idle → working (on task start)
-working → idle (on task completion)
-working → done (on all tasks complete)
-working → error (on task failure)
-error → idle (on error recovery)
-done → idle (on new task)
+**Swift Model:**
+```swift
+struct AgentInstance: Identifiable, Codable {
+    let id: UUID
+    let pid: pid_t
+    let name: String                  // "Claude Code"
+    let agentType: String              // "claude-code", "cursor", etc.
+    let cwd: String                    // Working directory path
+    var status: AgentStatus            // idle, thinking, running_tool, error
+    var currentTask: String?           // "Editing AppDelegate.swift"
+    var modelName: String?             // "claude-sonnet-4-5-20250929"
+    var gitBranch: String?             // "001-mvp"
+    var subagents: [SubagentInfo]      // Active subagents
+    var todos: [TodoItem]              // Todo list
+    var lastUpdate: Date
+}
 ```
 
-### Lifecycle
+**Validation Rules:**
+- `id`: Must be unique UUID
+- `pid`: Must be valid process ID (> 0)
+- `name`: Non-empty string, max 100 characters
+- `agentType`: Must match known types ("claude-code", "cursor", "windsurf")
+- `cwd`: Valid file system path
+- `status`: Must be valid AgentStatus enum value
+- `currentTask`: Optional, max 500 characters
+- `modelName`: Optional, max 100 characters
+- `gitBranch`: Optional, max 100 characters
+- `subagents`: Array, max 10 items
+- `todos`: Array, max 50 items
+- `lastUpdate`: Must not be in the future
 
-1. **Created**: When ProcessMonitor detects new Claude Code process
-2. **Updated**: When status changes or currentTask parsed from stdout
-3. **Deleted**: When process terminates (removed from instances list)
-
-### Example (JSON representation)
-
+**JSON Schema (WebSocket):**
 ```json
 {
-  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "uuid-string",
   "pid": 12345,
+  "name": "Claude Code",
   "agentType": "claude-code",
-  "workingDirectory": "/Users/dev/project",
-  "status": "working",
-  "currentTask": "Implementing authentication tests",
-  "lastActivityTimestamp": "2025-01-02T14:30:00Z",
-  "windowIdentifier": "1234",
+  "cwd": "/Users/dev/project",
+  "status": "thinking",
+  "currentTask": "Editing AppDelegate.swift",
   "modelName": "claude-sonnet-4-5-20250929",
   "gitBranch": "001-mvp",
-  "activeSubagents": [
+  "subagents": [
     {
-      "agentId": "subagent-001",
       "type": "Explore",
-      "description": "Researching authentication patterns"
+      "description": "Searching codebase for authentication patterns",
+      "startedAt": "2025-01-05T10:30:00Z"
     }
   ],
   "todos": [
     {
-      "id": "todo-1",
-      "content": "Create SubagentInfo model",
-      "status": "completed",
-      "activeForm": "Creating SubagentInfo model"
-    },
-    {
-      "id": "todo-2",
-      "content": "Create TodoItem model",
+      "content": "Implement authentication",
       "status": "in_progress",
-      "activeForm": "Creating TodoItem model"
-    },
-    {
-      "id": "todo-3",
-      "content": "Integrate TranscriptParser",
-      "status": "pending",
-      "activeForm": "Integrating TranscriptParser"
+      "activeForm": "Implementing authentication"
     }
   ],
-  "currentTaskDescription": "Creating TodoItem model"
+  "lastUpdate": "2025-01-05T10:35:00Z"
 }
 ```
 
 ---
 
-## Entity 2: SubagentInfo
+### 2. AgentStatus
 
-**Purpose**: Represents an active subagent spawned by the main Claude Code agent.
+**Purpose:** Enum representing current agent activity state
 
-### Attributes
+**Swift Model:**
+```swift
+enum AgentStatus: String, Codable {
+    case idle         // Waiting for input
+    case thinking     // Processing request
+    case runningTool  // Executing tool (Bash, Read, etc.)
+    case error        // Error state
+}
+```
 
-| Attribute | Type | Nullable | Description | Validation |
-|-----------|------|----------|-------------|------------|
-| `agentId` | String | No | Unique identifier for this subagent | Format: "subagent-NNN" |
-| `type` | String | No | Subagent type (e.g., "Explore", "general-purpose") | Extracted from transcript |
-| `description` | String | No | Human-readable task description | Max length: 200 chars |
+**Validation Rules:**
+- Must be one of: "idle", "thinking", "runningTool", "error"
+- Case-sensitive
 
-### Lifecycle
+**JSON Representation:**
+```json
+"status": "thinking"
+```
 
-1. **Created**: When transcript shows new subagent invocation
-2. **Updated**: When subagent description changes
-3. **Deleted**: When subagent completes (removed from activeSubagents array)
+---
 
-### Example (JSON representation)
+### 3. SubagentInfo
 
+**Purpose:** Represents an active subagent launched by main agent
+
+**Swift Model:**
+```swift
+struct SubagentInfo: Codable, Hashable {
+    let type: String               // "Explore", "Plan", "general-purpose"
+    let description: String        // "Searching for authentication patterns"
+    let startedAt: Date
+}
+```
+
+**Validation Rules:**
+- `type`: Non-empty string, max 50 characters
+- `description`: Non-empty string, max 500 characters
+- `startedAt`: Must not be in the future
+
+**JSON Schema:**
 ```json
 {
-  "agentId": "subagent-001",
   "type": "Explore",
-  "description": "Researching authentication patterns in React Native"
+  "description": "Searching for authentication patterns",
+  "startedAt": "2025-01-05T10:30:00Z"
 }
 ```
 
 ---
 
-## Entity 3: TodoItem
+### 4. TodoItem
 
-**Purpose**: Represents a task item from Claude Code's todo list.
+**Purpose:** Represents a task in agent's todo list
 
-### Attributes
+**Swift Model:**
+```swift
+struct TodoItem: Codable, Hashable {
+    let content: String            // "Implement authentication"
+    let status: TodoStatus         // pending, in_progress, completed
+    let activeForm: String         // "Implementing authentication"
+}
 
-| Attribute | Type | Nullable | Description | Validation |
-|-----------|------|----------|-------------|------------|
-| `id` | String | No | Unique identifier for this todo item | Generated from content hash |
-| `content` | String | No | Todo item text (imperative form) | Max length: 200 chars |
-| `status` | TodoStatus | No | Current status (pending, in_progress, completed) | Enum: "pending", "in_progress", "completed" |
-| `activeForm` | String | No | Present continuous form for display when active | Max length: 200 chars |
-
-### State Transitions
-
-```
-pending → in_progress (when task becomes current)
-in_progress → completed (when task finishes)
-completed → in_progress (rare: if task reopened)
+enum TodoStatus: String, Codable {
+    case pending
+    case inProgress = "in_progress"
+    case completed
+}
 ```
 
-### Lifecycle
+**Validation Rules:**
+- `content`: Non-empty string, max 500 characters
+- `status`: Must be "pending", "in_progress", or "completed"
+- `activeForm`: Non-empty string, max 500 characters
 
-1. **Created**: When new task appears in transcript todo list
-2. **Updated**: When status changes (pending → in_progress → completed)
-3. **Deleted**: When task is removed from todo list (rare)
-
-### Example (JSON representation)
-
+**JSON Schema:**
 ```json
 {
-  "id": "todo-1",
-  "content": "Create SubagentInfo model",
-  "status": "completed",
-  "activeForm": "Creating SubagentInfo model"
+  "content": "Implement authentication",
+  "status": "in_progress",
+  "activeForm": "Implementing authentication"
 }
 ```
 
 ---
 
-## Entity 4: AgentStatus
+### 5. CustomAction
 
-**Purpose**: Enumeration of possible agent states displayed on mobile UI.
+**Purpose:** User-defined command/script that can be triggered from PWA
 
-### Values
+**Swift Model:**
+```swift
+struct CustomAction: Identifiable, Codable {
+    let id: UUID
+    let label: String              // "Open Figma"
+    let icon: String               // "🎨" or "design_services"
+    let actionType: ActionType     // applescript, bash, url, shortcuts
+    let params: ActionParams       // Type-specific parameters
+    var enabled: Bool
+}
 
-| Value | Display Color | Description | UI Icon Suggestion |
-|-------|--------------|-------------|-------------------|
-| `idle` | Gray (#888888) | Agent waiting for user input | ⏸️ Pause circle |
-| `working` | Blue (#0066CC) | Agent actively processing task | ⚙️ Spinning gear |
-| `done` | Green (#00AA00) | Agent completed all tasks | ✅ Checkmark |
-| `error` | Red (#CC0000) | Agent encountered error | ⚠️ Warning triangle |
+enum ActionType: String, Codable {
+    case applescript
+    case bash
+    case url
+    case shortcuts
+}
 
-### Mapping from Spec Requirements
+struct ActionParams: Codable {
+    // AppleScript
+    var script: String?            // AppleScript source code
 
-- FR-012 specifies color-coded indicators
-- These values satisfy spec color requirements
+    // Bash
+    var command: String?           // Shell command
+    var args: [String]?            // Command arguments
+
+    // URL
+    var urlString: String?         // URL to open
+    var scheme: String?            // URL scheme (optional validation)
+
+    // Shortcuts (Phase 5+)
+    var shortcutName: String?      // Shortcut name
+    var shortcutParams: [String: String]?  // Input parameters
+}
+```
+
+**Validation Rules:**
+- `id`: Must be unique UUID
+- `label`: Non-empty string, max 50 characters, no newlines
+- `icon`: Single emoji (1-2 characters) OR Material Symbols icon name (max 50 chars)
+- `actionType`: Must be "applescript", "bash", "url", or "shortcuts"
+- `enabled`: Boolean
+
+**ActionParams Validation:**
+- **AppleScript**: `script` required, non-empty, max 10,000 characters
+- **Bash**: `command` required, non-empty, max 1,000 characters; `args` optional array
+- **URL**: `urlString` required, valid URL format, allowed schemes: http, https, file, mailto, tel
+- **Shortcuts**: `shortcutName` required (Phase 5+)
+
+**JSON Schema:**
+```json
+{
+  "id": "uuid-string",
+  "label": "Open Figma",
+  "icon": "🎨",
+  "actionType": "applescript",
+  "params": {
+    "script": "tell application \"Figma\" to activate"
+  },
+  "enabled": true
+}
+```
+
+**YAML Configuration Example:**
+```yaml
+customActions:
+  - id: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
+    label: "Open Figma"
+    icon: "🎨"
+    actionType: "applescript"
+    params:
+      script: 'tell application "Figma" to activate'
+    enabled: true
+
+  - id: "B2C3D4E5-F6A7-8901-BCDE-F12345678901"
+    label: "Git Status"
+    icon: "📊"
+    actionType: "bash"
+    params:
+      command: "/usr/bin/git"
+      args: ["status", "--short"]
+    enabled: true
+
+  - id: "C3D4E5F6-A7B8-9012-CDEF-123456789012"
+    label: "GitHub"
+    icon: "🐙"
+    actionType: "url"
+    params:
+      urlString: "https://github.com"
+    enabled: true
+```
 
 ---
 
-## Entity 5: StatusUpdate
+### 6. ActionResult
 
-**Purpose**: Real-time event message broadcast via WebSocket to mobile clients.
+**Purpose:** Result of custom action execution
 
-### Attributes
-
-| Attribute | Type | Nullable | Description | Validation |
-|-----------|------|----------|-------------|------------|
-| `type` | String | No | Message type identifier | Enum: "update", "instance_change", "connection_status" |
-| `instanceId` | UUID | Yes | Reference to AgentInstance | Required for "update" type |
-| `status` | AgentStatus | Yes | New status value | Required for "update" type |
-| `currentTask` | String | Yes | Current task description | Max length: 200 chars |
-| `timestamp` | Date | No | Event timestamp | ISO 8601 format |
-| `metadata` | Dictionary<String, Any> | Yes | Additional event data | Optional per event type |
-
-### Message Types
-
-**Type: "update"** (Status change for existing instance)
-```json
-{
-  "type": "update",
-  "instanceId": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "working",
-  "currentTask": "Writing unit tests",
-  "timestamp": "2025-01-02T14:30:15Z"
+**Swift Model:**
+```swift
+struct ActionResult: Codable {
+    let actionId: UUID
+    let success: Bool
+    let output: String?            // stdout or success message
+    let error: String?             // stderr or error message
+    let executedAt: Date
 }
 ```
 
-**Type: "instance_change"** (Instance added/removed)
+**Validation Rules:**
+- `actionId`: Must be valid UUID matching existing CustomAction
+- `success`: Boolean
+- `output`: Optional, max 10,000 characters
+- `error`: Optional, max 10,000 characters
+- `executedAt`: Must not be in the future
+
+**JSON Schema:**
 ```json
 {
-  "type": "instance_change",
-  "action": "added",
-  "instance": { /* full AgentInstance JSON */ },
-  "timestamp": "2025-01-02T14:25:00Z"
+  "actionId": "uuid-string",
+  "success": true,
+  "output": "Application 'Figma' activated",
+  "error": null,
+  "executedAt": "2025-01-05T10:45:00Z"
 }
 ```
-
-**Type: "connection_status"** (Server connection health)
-```json
-{
-  "type": "connection_status",
-  "status": "connected",
-  "serverVersion": "1.0.0",
-  "timestamp": "2025-01-02T14:20:00Z"
-}
-```
-
-### Lifecycle
-
-1. **Created**: When status change detected by ProcessMonitor
-2. **Broadcast**: Sent via WebSocket to all connected clients
-3. **Delivered**: Within 500ms of creation (SC-001 requirement)
-4. **Ephemeral**: Not persisted (in-memory only)
 
 ---
 
-## Entity 6: Configuration
+### 7. Configuration
 
-**Purpose**: Application settings loaded from YAML file and UserDefaults.
+**Purpose:** Application configuration loaded from YAML
 
-### Attributes
+**Swift Model:**
+```swift
+struct Configuration: Codable {
+    let server: ServerConfig
+    let agents: [AgentConfig]
+    let customActions: [CustomAction]
+}
 
-| Attribute | Type | Nullable | Source | Description |
-|-----------|------|----------|--------|-------------|
-| `serverPort` | Int | No | YAML / UserDefaults | WebSocket/HTTP server port (default: 3000) |
-| `serverHost` | String | No | YAML | Server bind address (default: "0.0.0.0") |
-| `autoStartOnLogin` | Bool | No | UserDefaults | Launch app on macOS login |
-| `agentPatterns` | Array<AgentPattern> | No | YAML | Process name regex patterns |
+struct ServerConfig: Codable {
+    let port: UInt16               // 3000-65535
+    let host: String               // "0.0.0.0" or "127.0.0.1"
+}
 
-### Sub-Entity: AgentPattern
+struct AgentConfig: Codable {
+    let name: String               // "Claude Code"
+    let processPattern: String     // "claude.*code" (regex)
+    let enabled: Bool
+}
+```
 
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `name` | String | Display name (e.g., "Claude Code") |
-| `processPattern` | String | Regex pattern (e.g., "claude.*code") |
-| `enabled` | Bool | Whether to monitor this agent type |
+**Validation Rules:**
+- **ServerConfig:**
+  - `port`: 3000-65535 (avoid system ports 0-1023)
+  - `host`: Valid IP address ("0.0.0.0", "127.0.0.1") or hostname
 
-### Example YAML Configuration
+- **AgentConfig:**
+  - `name`: Non-empty, max 100 characters
+  - `processPattern`: Valid regex pattern, max 200 characters
+  - `enabled`: Boolean
 
+- **Configuration:**
+  - `agents`: At least 1 enabled agent
+  - `customActions`: Max 20 actions (UI limit)
+
+**YAML Schema:**
 ```yaml
 server:
   port: 3000
@@ -279,126 +357,254 @@ server:
 
 agents:
   - name: "Claude Code"
-    process_pattern: "claude.*code"
+    processPattern: "claude.*code"
     enabled: true
 
   - name: "Cursor"
-    process_pattern: "Cursor"
-    enabled: false  # Phase 3+
+    processPattern: "Cursor"
+    enabled: false
+
+customActions:
+  - id: "uuid-1"
+    label: "Open Figma"
+    icon: "🎨"
+    actionType: "applescript"
+    params:
+      script: 'tell application "Figma" to activate'
+    enabled: true
 ```
 
-### Lifecycle
+**Default Configuration:**
+```yaml
+server:
+  port: 3000
+  host: "0.0.0.0"
 
-1. **Loaded**: On app launch from ~/.agent-deck/config.yaml
-2. **Created**: Default config written if file doesn't exist
-3. **Updated**: When user modifies settings via Settings window or edits YAML
-4. **Reloaded**: On file change detection (optional Phase 3+)
+agents:
+  - name: "Claude Code"
+    processPattern: "claude.*code"
+    enabled: true
+
+customActions: []
+```
 
 ---
 
-## Entity 7: WebSocketConnection
-
-**Purpose**: Represents active connection from mobile client to Mac server.
-
-### Attributes
-
-| Attribute | Type | Nullable | Description |
-|-----------|------|----------|-------------|
-| `id` | UUID | No | Unique connection identifier |
-| `remoteAddress` | String | No | Client IP address (e.g., "192.168.1.50") |
-| `connectedAt` | Date | No | Connection establishment timestamp |
-| `lastPingAt` | Date | Yes | Timestamp of last ping/pong |
-| `connection` | NWConnection | No | Network.framework connection object |
-
-### Relationships
-
-- **Receives**: StatusUpdate messages (N:N - many connections receive many updates)
-- **Managed by**: WebSocketServer service
-
-### Lifecycle
-
-1. **Created**: When mobile client completes WebSocket handshake
-2. **Active**: While connection open and ping/pong heartbeat succeeds
-3. **Disconnected**: On client disconnect, network failure, or server shutdown
-4. **Cleaned up**: Immediately on disconnect (removed from connections list)
-
----
-
-## Data Flow Diagram
+## Entity Relationships
 
 ```
-┌──────────────────┐
-│  ProcessMonitor  │ (Polls every 1-2s)
-└────────┬─────────┘
-         │ Detects process
-         ↓
-   ┌─────────────┐
-   │AgentInstance│ (Created/Updated)
-   └──────┬──────┘
-          │ Status change
-          ↓
-   ┌─────────────┐
-   │StatusUpdate │ (Event created)
-   └──────┬──────┘
-          │ Broadcast
-          ↓
-  ┌────────────────────┐
-  │ WebSocketServer    │
-  └──────┬─────────────┘
-         │ Send to all
-         ↓
-  ┌────────────────────┐
-  │WebSocketConnection │ (N connected clients)
-  └──────┬─────────────┘
-         │ Receive
-         ↓
-    ┌──────────┐
-    │PWA Client│ (Mobile device)
-    └──────────┘
+Configuration
+├── ServerConfig (1:1)
+├── AgentConfig[] (1:N)
+└── CustomAction[] (1:N)
+
+AgentInstance
+├── AgentStatus (1:1)
+├── SubagentInfo[] (1:N)
+└── TodoItem[] (1:N)
+
+CustomAction
+└── ActionResult (1:N) [execution history, not persisted in MVP]
 ```
+
+**Key Relationships:**
+- Each `Configuration` has one `ServerConfig`
+- Each `Configuration` has 1-10 `AgentConfig` entries
+- Each `Configuration` has 0-20 `CustomAction` entries
+- Each `AgentInstance` has 0-10 `SubagentInfo` entries
+- Each `AgentInstance` has 0-50 `TodoItem` entries
+- Each `CustomAction` can generate multiple `ActionResult` objects (not persisted)
 
 ---
 
 ## Persistence Strategy
 
-| Entity | Persistence Mechanism | Persistence Scope |
-|--------|----------------------|-------------------|
-| AgentInstance | In-memory only | Runtime (lost on app quit) |
-| AgentStatus | In-memory only | Enum definition (code) |
-| StatusUpdate | In-memory only | Ephemeral (broadcast and discard) |
-| Configuration | YAML file + UserDefaults | Persistent across launches |
-| WebSocketConnection | In-memory only | Runtime (lost on disconnect) |
+### Mac App (Swift)
 
-**Rationale**: MVP prioritizes speed. Persistence of agent history deferred to Phase 3+ based on user feedback.
+**Configuration:**
+- **Location:** `~/.agent-deck/config.yaml`
+- **Format:** YAML (human-editable)
+- **Library:** Yams (Swift YAML parser)
+- **Frequency:** Load on startup, reload on file change (FSEvents)
+
+**Agent Instances:**
+- **Storage:** In-memory only (transient)
+- **Source:** Derived from running processes (NSWorkspace)
+- **Lifecycle:** Created on process detection, removed on process exit
+
+**Custom Actions:**
+- **Storage:** Embedded in `config.yaml` under `customActions` key
+- **Updates:** Write to `config.yaml`, reload configuration
+
+### PWA (JavaScript)
+
+**Panel State:**
+- **Storage:** localStorage
+- **Key:** `agentDeckPanelState`
+- **Format:** JSON
+- **Data:**
+  ```json
+  {
+    "panelHeight": 300,
+    "visibleButtons": 12
+  }
+  ```
+
+**Connection State:**
+- **Storage:** sessionStorage (cleared on tab close)
+- **Key:** `agentDeckConnection`
+- **Data:**
+  ```json
+  {
+    "lastConnectedUrl": "ws://192.168.1.100:3000",
+    "autoReconnect": true
+  }
+  ```
+
+**No Persistence:**
+- Agent instances (received via WebSocket, display-only)
+- Custom actions (received via WebSocket, display-only)
 
 ---
 
-## Validation Rules
+## Data Flow
 
-### AgentInstance
-- `pid` must be valid running process (verified via NSWorkspace)
-- `workingDirectory` must be absolute path (starts with "/")
-- `currentTask` truncated to 200 characters if longer
-- `status` must be valid AgentStatus value
+### 1. App Startup (Mac)
 
-### Configuration
-- `serverPort` must be 1024-65535 (unprivileged port range)
-- `serverHost` must be valid IPv4 address or "0.0.0.0"
-- `agentPatterns[].processPattern` must be valid regex
+```
+1. Load config.yaml → Configuration struct
+2. Start WebSocket/HTTP servers (ServerConfig.port)
+3. Start process monitoring (filter by AgentConfig.processPattern)
+4. Load CustomAction[] from config.yaml
+5. Broadcast initial state to connected PWA clients
+```
 
-### StatusUpdate
-- `instanceId` must reference existing AgentInstance (except "connection_status" type)
-- `timestamp` must be current or recent (within 5 seconds tolerance)
+### 2. Agent Detection (Mac)
+
+```
+1. NSWorkspace.runningApplications → filter by processPattern
+2. Read transcript file → parse current task, model, branch, todos, subagents
+3. Create/update AgentInstance in-memory
+4. Broadcast "update" message via WebSocket
+```
+
+### 3. Custom Action Execution (Mac → PWA)
+
+```
+1. PWA: User taps action button
+2. PWA → Mac: WebSocket message { type: "execute_action", actionId: "uuid" }
+3. Mac: Find CustomAction by ID
+4. Mac: Execute based on actionType (AppleScript, Bash, URL)
+5. Mac: Create ActionResult
+6. Mac → PWA: WebSocket message { type: "action_result", result: {...} }
+7. PWA: Show success/failure toast
+```
+
+### 4. Configuration Changes
+
+```
+1. User edits ~/.agent-deck/config.yaml
+2. FSEvents detects file change
+3. ConfigManager reloads YAML
+4. Update in-memory Configuration
+5. Restart services if server config changed
+6. Broadcast "actions" message with updated CustomAction[]
+```
 
 ---
 
-## Future Extensions (Phase 3+)
+## Validation Examples
 
-**Deferred to post-MVP based on user feedback**:
-- Task history (list of completed tasks per instance)
-- Output logs (full stdout/stderr capture)
-- Performance metrics (task duration, success rate)
-- Custom actions (trigger bash/AppleScript from mobile)
-- Multi-agent comparison view (side-by-side status)
+### Valid AgentInstance
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "pid": 54321,
+  "name": "Claude Code",
+  "agentType": "claude-code",
+  "cwd": "/Users/dev/apps/app-009-agent-deck",
+  "status": "thinking",
+  "currentTask": "Generating data-model.md",
+  "modelName": "claude-sonnet-4-5-20250929",
+  "gitBranch": "001-mvp",
+  "subagents": [],
+  "todos": [
+    {
+      "content": "Generate data-model.md",
+      "status": "in_progress",
+      "activeForm": "Generating data-model.md"
+    }
+  ],
+  "lastUpdate": "2025-01-05T10:50:00Z"
+}
+```
 
-See [spec.md User Story 4](./spec.md) for parsed output enhancement in Phase 3.
+### Valid CustomAction (AppleScript)
+```json
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "label": "Open Figma",
+  "icon": "🎨",
+  "actionType": "applescript",
+  "params": {
+    "script": "tell application \"Figma\" to activate"
+  },
+  "enabled": true
+}
+```
+
+### Invalid CustomAction (Missing Required Field)
+```json
+{
+  "id": "invalid",
+  "label": "Broken Action",
+  "icon": "❌",
+  "actionType": "bash",
+  "params": {
+    // ERROR: Missing "command" field for bash action
+  },
+  "enabled": true
+}
+```
+
+**Validation Error:**
+```
+CustomAction validation failed:
+- actionType "bash" requires params.command (non-empty string)
+```
+
+---
+
+## Future Considerations (Post-MVP)
+
+### Phase 3+: Full Parsing
+- Add `StatusLineData` struct (memory usage, tool execution, recent activity)
+- Expand `TodoItem` with timestamps, dependencies
+
+### Phase 5+: Mobile Interaction
+- Add `ApprovalRequest` struct (for yes/no prompts from agent)
+- Add `InputRequest` struct (for text input from mobile)
+
+### Phase 6+: Cloud Sync
+- Add `cloudSyncEnabled` flag to Configuration
+- Add `lastSyncedAt` timestamp to entities
+- Add conflict resolution strategy
+
+### Phase 7+: Native Mobile Apps
+- Swift models shared between macOS and iOS (Swift Package)
+- CoreData for offline persistence on mobile
+
+---
+
+## Appendix: JSON Schema Definitions
+
+**Full WebSocket Message Schema** → See `contracts/websocket-protocol.md`
+
+**YAML Configuration Schema** → See `default-config.yaml` in Resources/
+
+---
+
+**Document Version:** 1.0
+**Generated:** 2025-01-05
+**Phase:** 001-mvp (Phases 1-2)
+**SpecKit Template:** spec-kit-template-claude-sh-v0.0.79
