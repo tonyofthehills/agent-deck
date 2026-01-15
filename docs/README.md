@@ -1,64 +1,79 @@
-# Agent Deck Documentation Assets
+# Agent Deck Documentation
 
-This directory contains screenshots, demo GIFs, and other visual assets for documentation.
+## Quick Start
 
-## Contents
-
-### Demo Materials
-- `demo.gif` - Hero demo GIF (Mac + mobile, 20-30s)
-- `demo-window-switching.gif` - Window switching feature demo
-- `demo-monitoring.gif` - Real-time monitoring feature demo
-
-### Screenshots
-
-**Mac App:**
-- `screenshot-menubar.png` - Agent Deck menubar icon and dropdown
-- `screenshot-qr-code.png` - QR code display for mobile pairing
-- `screenshot-settings.png` - Settings window (when implemented)
-
-**Mobile PWA:**
-- `screenshot-mobile-home.png` - PWA home screen with agent cards
-- `screenshot-mobile-expanded.png` - Agent card with expanded sections
-- `screenshot-mobile-installing.png` - "Add to Home Screen" dialog
-
-**Cross-Platform:**
-- `screenshot-side-by-side.png` - Mac and mobile side by side
-
-### Icons
-- `icon-agent-deck.png` - App icon (various sizes)
-- `icon-menubar.png` - Menubar icon (monochrome)
-
-## Creating Assets
-
-**Follow:** `../DEMO_GIF_INSTRUCTIONS.md` for detailed recording instructions
-
-**Recommended Tools:**
-- QuickTime Player (Mac screen recording)
-- iPhone Screen Recording (mobile capture)
-- Gifski (GIF conversion) - https://gif.ski/
-
-**Specs:**
-- **GIF:** < 10MB, 1080px width, 15-30 fps
-- **Screenshots:** 2x resolution (Retina), PNG format
-- **Naming:** Lowercase with hyphens, descriptive
-
-## Usage in Documentation
-
-**README.md:**
-```markdown
-![Demo](docs/demo.gif)
-![Screenshot](docs/screenshot-mobile-home.png)
-```
-
-**Show HN Post:**
-```markdown
-![Demo](https://github.com/tonyofthehills/agent-deck/raw/main/docs/demo.gif)
-```
-
-**GitHub Release:**
-- Upload `demo.gif` as release asset
-- Reference in release notes
+New to Agent Deck? Start here: **[Quick Start Guide](guides/QUICK_START.md)**
 
 ---
 
-**Status:** Assets not yet created - see `../DEMO_GIF_INSTRUCTIONS.md` to create
+## Development Guides
+
+| Guide | Description |
+|-------|-------------|
+| [Quick Start](guides/QUICK_START.md) | Get running in 5 minutes |
+| [Swift Guide](guides/SWIFT_GUIDE.md) | macOS app development patterns |
+| [React Native Guide](guides/REACT_NATIVE_GUIDE.md) | Mobile app development patterns |
+| [MCP Integration](guides/MCP_INTEGRATION.md) | MCP server usage for Claude Code |
+| [Security Guide](guides/SECURITY.md) | Security scanning with Semgrep |
+| [Testing Guide](guides/TESTING_GUIDE.md) | Testing procedures and workflows |
+| [Test Checklist](guides/TEST_CHECKLIST.md) | Manual testing checklist for MVP |
+| [Lessons Learned](guides/LESSONS_LEARNED.md) | Critical Swift/Combine patterns |
+
+---
+
+## Release Materials
+
+| Document | Description |
+|----------|-------------|
+| [Release Notes](release/RELEASE_NOTES.md) | Current version release notes |
+| [Release Checklist](release/RELEASE_CHECKLIST.md) | Pre-release verification |
+| [Roadmap](release/ROADMAP.md) | Future development plans |
+
+---
+
+## Specifications
+
+Full specs are in `specs/001-mvp/`:
+
+| Document | Description |
+|----------|-------------|
+| [spec.md](../specs/001-mvp/spec.md) | Feature specification |
+| [plan.md](../specs/001-mvp/plan.md) | Implementation plan |
+| [tasks.md](../specs/001-mvp/tasks.md) | Task breakdown |
+| [data-model.md](../specs/001-mvp/data-model.md) | Data models |
+
+---
+
+## Research
+
+| Document | Description |
+|----------|-------------|
+| [Monorepo Research](MONOREPO_RESEARCH_REPORT.md) | pnpm workspace analysis |
+| [Monorepo Quick Ref](MONOREPO_QUICK_REFERENCE.md) | pnpm commands cheat sheet |
+
+---
+
+## Archive
+
+Historical development documents (session summaries, implementation notes, fixes) are in `archive/`. These are preserved for reference but not actively maintained.
+
+---
+
+## Assets
+
+Screenshots and demo materials placeholders (see top of this file for planned structure).
+
+---
+
+## Key Files
+
+| File | Location | Purpose |
+|------|----------|---------|
+| CLAUDE.md | Root | Claude Code guidance |
+| README.md | Root | Project overview |
+| CHANGELOG.md | Root | Version history |
+| LICENSE | Root | MIT License |
+
+---
+
+**Last Updated:** January 2026

@@ -496,6 +496,88 @@ After:  "✅ Agent Deck killed successfully" (actual last message from Claude)
 
 ---
 
+### 10. PWA Field Name Mismatches Between Server and Client 🟡 MEDIUM
+
+**Problem:** PWA showing "NaNd ago" for timestamps and missing model/subagent data. No JavaScript errors in console.
+
+**Root Cause:** Swift server's `AgentInstance.toDictionary()` uses different field names than the PWA JavaScript expects.
+
+**Field Mismatches Found:**
+| Server Field (Swift) | PWA Expected (JS) | Data |
+|---------------------|-------------------|------|
+| `lastActivity` | `lastActivityTimestamp` | ISO date string |
+| `model` | `modelName` | "claude-sonnet-4-5-20250929" |
+| `subagents` | `activeSubagents` | Array of subagent objects |
+
+**❌ What Doesn't Work:**
+```javascript
+// PWA tried to use fields that don't exist
+const timestamp = instance.lastActivityTimestamp;  // undefined!
+const model = instance.modelName;                   // undefined!
+const subagents = instance.activeSubagents;         // undefined!
+
+// Results in:
+new Date(undefined)  // → Invalid Date
+date.getTime()       // → NaN
+"NaNd ago"           // → Displayed to user! 😱
+```
+
+**✅ What Works - Defensive Fallback Pattern:**
+```javascript
+// Handle both server and expected field names for robustness
+const lastActivity = instance.lastActivity || instance.lastActivityTimestamp;
+const modelName = instance.model || instance.modelName;
+const subagents = instance.subagents || instance.activeSubagents;
+
+// Also add null/undefined guards in display functions
+formatTimestamp(timestamp) {
+    if (!timestamp) {
+        return 'Just now';  // ✅ Graceful fallback
+    }
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) {
+        return 'Just now';  // ✅ Handle Invalid Date
+    }
+    // ... rest of formatting
+}
+
+shortenModelName(modelName) {
+    if (!modelName) {
+        return 'Unknown';  // ✅ Handle undefined
+    }
+    // ... rest of shortening logic
+}
+```
+
+**Why This Pattern:**
+1. **Forward compatibility** - If server changes field names, one of the fallbacks will work
+2. **Backward compatibility** - Works with old and new server versions
+3. **Defensive coding** - Handles edge cases gracefully
+4. **Silent failures** - JavaScript doesn't throw errors for undefined property access
+
+**Debugging Steps:**
+1. Open browser DevTools → Network → WebSocket
+2. Click on the WebSocket connection
+3. View "Messages" tab to see actual JSON from server
+4. Compare field names with what JavaScript code expects
+5. Add console.log of received instance to see actual structure
+
+**Prevention:**
+- Always check server's `toDictionary()` method before writing client code
+- Add TypeScript interfaces that match server exactly
+- Consider shared type definitions between Swift and TypeScript
+
+**Files Fixed:**
+- `Resources/WebRoot/app.js:325-327` - Timestamp field fallback
+- `Resources/WebRoot/app.js:705-729` - formatTimestamp() null handling
+- `Resources/WebRoot/app.js:479` - Model field fallback
+- `Resources/WebRoot/app.js:519-543` - shortenModelName() null handling
+- `Resources/WebRoot/app.js:360` - Subagents field fallback
+
+**Reference:** `Models/AgentInstance.swift:109-156` (`toDictionary()` method)
+
+---
+
 ## Architecture Patterns
 
 ### Real-Time Monitoring Flow
@@ -659,6 +741,16 @@ Look for NSLog messages:
 
 ## Completed This Session
 
+✅ **Session 4: PWA Field Mapping Fixes (v0.1.2)**
+- Fixed "NaNd ago" timestamp display caused by server/client field name mismatch
+- Fixed missing model name display (server sends `model`, PWA expected `modelName`)
+- Fixed missing subagents display (server sends `subagents`, PWA expected `activeSubagents`)
+- Added defensive fallback pattern: `serverField || clientField` for all mismatched fields
+- Enhanced `formatTimestamp()` to handle undefined/null/invalid Date values
+- Enhanced `shortenModelName()` to handle undefined input
+- Documented in LESSONS_LEARNED.md (section 10)
+- Updated CHANGELOG.md for v0.1.2 release
+
 ✅ **Session 3: Process Detection Fixes + Last Statement Display**
 - Fixed duplicate instance detection (14 → 5 instances shown)
 - Added child process filtering (node, shell wrappers, Zed external agents)
@@ -679,6 +771,6 @@ Look for NSLog messages:
 
 ---
 
-**Last Updated:** 2025-01-07 (Session 3)
-**Session:** Process detection fixes + Last statement display
-**Status:** ✅ Complete - Accurate instance count, contextual idle messages
+**Last Updated:** 2025-01-10 (Session 4)
+**Session:** PWA field mapping fixes
+**Status:** ✅ Complete - PWA now correctly displays timestamps, model names, and subagents
