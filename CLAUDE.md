@@ -70,7 +70,7 @@ Project-specific guidance for Claude Code.
 - **Language**: TypeScript 5.0+
 - **Package Manager**: pnpm (monorepo)
 
-### Current Versions (2025)
+### Current Versions (2026)
 | Platform | Version |
 |----------|---------|
 | macOS | 26.0 (Tahoe) |
@@ -141,38 +141,18 @@ $ANDROID_HOME/emulator/emulator -avd "Medium_Phone_API_36.1" &
 
 ## MCP Servers
 
-**Always use subagents for research/exploration tasks.**
-
-| Server | Use For | Direct/Subagent |
-|--------|---------|-----------------|
-| Exa | Web research | Subagent |
-| Ref | Documentation | Subagent |
-| Context7 | Library docs | Subagent |
-| Perplexity | Deep research | Subagent (only when user requests) |
-| Pieces | Historical context | Subagent |
-| Semgrep | Security scans | Direct |
-| XcodeBuildMCP | Build/test/run | Direct |
-| iOS Simulator MCP | UI automation | Direct |
-| GitHub | Issues, PRs | Direct |
+See workspace [CLAUDE.md](../../CLAUDE.md) for MCP server reference. Project-specific MCPs: XcodeBuildMCP for Swift builds, iOS Simulator MCP for UI automation.
 
 ### XcodeBuildMCP Quick Reference
 
 ```
-# Build macOS app
 mcp__XcodeBuildMCP__build_macos({
   projectPath: ".../apps/macos/Agent-Deck/AgentDeck.xcodeproj",
   scheme: "AgentDeck"
 })
-
-# Build and run
-mcp__XcodeBuildMCP__build_run_macos({ ... })
-
-# Run tests
-mcp__XcodeBuildMCP__test_macos({ ... })
-
-# Clean
-mcp__XcodeBuildMCP__clean({ ..., platform: "macOS" })
 ```
+
+Also available: `build_run_macos`, `test_macos`, `clean` (platform: "macOS").
 
 **Full details:** [MCP Integration Guide](docs/guides/MCP_INTEGRATION.md)
 
@@ -192,21 +172,12 @@ mcp__XcodeBuildMCP__clean({ ..., platform: "macOS" })
 
 ## Security Scanning
 
-**Scan before committing:**
-- AI-generated code
-- Auth/WebSocket changes
-- File operations
-- New dependencies
+See workspace [CLAUDE.md](../../CLAUDE.md) for scanning rules. Project scan paths:
 
 ```bash
-# Swift
-semgrep_scan: apps/macos/*/Sources/**/*.swift
-
-# React Native
-semgrep_scan: apps/mobile/src/**/*.{ts,tsx}
+semgrep_scan: apps/macos/*/Sources/**/*.swift      # Swift
+semgrep_scan: apps/mobile/src/**/*.{ts,tsx}         # React Native
 ```
-
-**Full guide:** [Security Guide](docs/guides/SECURITY.md)
 
 ---
 
@@ -268,29 +239,6 @@ pnpm mobile -- --clear
 
 ---
 
-## External AI Tools
-
-```bash
-# Gemini CLI - Deep research
-gemini -m gemini-3-pro-preview "question"
-
-# Codex CLI - Code review
-codex exec "Review this codebase for [concern]"
-```
-
----
-
-## Claude Memory
-
-| Command | Purpose |
-|---------|---------|
-| `/memory-context` | Retrieve previous session context |
-| `/memory-save` | Save notes before ending session |
-
-Sessions auto-log via SessionEnd hook.
-
----
-
 ## Version
 
 **CLAUDE.md Version:** 4.0
@@ -301,6 +249,16 @@ Sessions auto-log via SessionEnd hook.
 - 2026-01-15: Major restructure - moved 51 files to archive, created docs/guides/ structure
 - 2025-12-10: MVP development complete (122/132 tasks)
 - 2025-11-25: Converted from menubar to dock app
+
+---
+
+## Claude Code Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `swift-lsp` | Intelligent Swift navigation for macOS native code — go-to-definition, find-references, symbol search, diagnostics |
+| `typescript-lsp` | Intelligent TypeScript navigation for React Native code — go-to-definition, find-references, type checking, symbol search |
+| `claude-md-management` | Use `/claude-md-management:revise-claude-md` to update and improve this CLAUDE.md |
 
 ---
 
